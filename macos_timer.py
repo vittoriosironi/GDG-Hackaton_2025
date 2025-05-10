@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import signal
 import sys
 import subprocess
+import os
 
 def show_notification(title: str, message: str, sound: bool = False):
     """
@@ -12,10 +13,35 @@ def show_notification(title: str, message: str, sound: bool = False):
            '-title', title,
            '-message', message,
            '-subtitle', 'Timer',
-           '-appIcon', '/System/Applications/Calendar.app/Contents/Resources/Calendar.icns']
+           '-appIcon', 'Clock Hour Timer Watch.icns']
     if sound:
         cmd.extend(['-sound', 'default'])
     subprocess.run(cmd)
+
+def set_do_not_disturb(enabled: bool):
+    """
+    Enable or disable Do Not Disturb mode on macOS.
+    
+    Args:
+        enabled (bool): True to enable Do Not Disturb, False to disable
+    """
+    try:
+        # Use defaults command to set Do Not Disturb
+        subprocess.run(['defaults', 'write', 'com.apple.notificationcenterui', 'doNotDisturb', '-bool', str(enabled).lower()], check=True)
+        
+        # Kill NotificationCenter to apply changes
+        subprocess.run(['killall', 'NotificationCenter'], stderr=subprocess.DEVNULL)
+        
+        # Show notification about the change
+        show_notification(
+            title="Do Not Disturb Mode",
+            message=f"{'Enabled' if enabled else 'Disabled'} Do Not Disturb mode",
+            sound=False
+        )
+        
+    except subprocess.CalledProcessError as e:
+        print(f"Error setting Do Not Disturb mode: {e}")
+
 
 def timer(minutes: int):
     """
@@ -25,6 +51,9 @@ def timer(minutes: int):
         minutes (int): Number of minutes to set the timer for
     """
     print(f"Timer started for {minutes} minutes")
+    
+    # Enable Do Not Disturb mode
+    set_do_not_disturb(True)
     
     # Show start notification with duration
     show_notification(
@@ -44,6 +73,9 @@ def timer(minutes: int):
         time.sleep(1)
     
     print("\nTimer complete!")
+    
+    # Disable Do Not Disturb mode
+    set_do_not_disturb(False)
     
     # Show completion notification with sound
     show_notification(
