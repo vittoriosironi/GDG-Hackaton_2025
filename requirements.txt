@@ -1,3 +1,7 @@
 psutil
 pywinctl
 pynput
+google-generativeai
+pyautogui
+pytesseract
+Pillow
