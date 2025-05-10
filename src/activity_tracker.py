@@ -408,7 +408,7 @@ if __name__ == "__main__":
     # Initialize the tracker with session name and goals
     tracker = SessionTracker(
         session_name="Generic Session",
-        user_goals=["Write code for an hackaton app", "Using the LLM to generate code"]
+        user_goals=["Write UI for an app", "Code on Vs Code"]
     )
     
     # Start tracking

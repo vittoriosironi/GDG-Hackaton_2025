@@ -3,6 +3,15 @@ from tkinter import scrolledtext, Canvas, Frame, Text, PhotoImage
 import datetime
 import threading
 import os
+import pyaudio
+import wave
+import numpy as np
+import time
+import sys
+
+import rumps
+MENU_BAR_AVAILABLE = True
+
 
 # Aggiungi queste importazioni per la registrazione audio
 try:
@@ -13,6 +22,9 @@ try:
 except ImportError:
     AUDIO_AVAILABLE = False
     print("Librerie audio non disponibili. La registrazione verrà simulata.")
+    
+# Menu bar implementation for macOS
+
 
 class MicrophoneButton(tk.Canvas):
     def __init__(self, parent, command=None, **kwargs):
@@ -50,7 +62,7 @@ class MicrophoneButton(tk.Canvas):
                 self.image = PhotoImage(file=image_path)
                 
                 # Ridimensiona l'immagine se necessario
-                scale_factor = min(width/self.image.width(), height/self.image.height()) * 0.7
+                scale_factor = min(width/self.image.width(), height/self.image.height()) * 0.6
                 if scale_factor < 1:
                     # Ridimensiona l'immagine se è troppo grande
                     self.image = self.image.subsample(int(1/scale_factor))
@@ -447,10 +459,36 @@ class BubbleCanvas(tk.Frame):
         
         self.current_y += bubble_frame.winfo_reqheight() + 10
         
+    def remove_last_bubble(self):
+        """
+        Rimuove l'ultima bolla di messaggio aggiunta all'interfaccia.
+        
+        Returns:
+            bool: True se un messaggio è stato rimosso, False altrimenti
+        """
+        # Ottiene tutti i widget frame che contengono le bolle
+        frames = self.inner_frame.winfo_children()
+        
+        # Se ci sono bolle, rimuove l'ultima
+        if frames:
+            last_frame = frames[-1]
+            # Aggiorna l'altezza sottraendo quella del frame rimosso
+            self.current_y -= last_frame.winfo_reqheight() + 10
+            # Distrugge il widget
+            last_frame.destroy()
+            
+            # Aggiorna la regione scrollabile
+            self.canvas.update_idletasks()
+            self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+            
+            return True
+        
+        return False
+        
 
 
 
-# Modifica la classe GUI per supportare la registrazione audio
+# Modify GUI class to support menu bar
 class GUI:
     def __init__(self, title="StudyWiz", width=500, height=600):
         # Definisci i colori qui per evitare variabili globali
@@ -475,6 +513,10 @@ class GUI:
         
         # Flag per il thread
         self.is_running = False
+        
+        # Menu bar app
+        self.menu_bar_app = None
+        self.menu_bar_thread = None
     
     def setup_ui(self):
         # Creazione della finestra principale
@@ -482,6 +524,28 @@ class GUI:
         self.root.title(self.title)
         self.root.geometry(f"{self.width}x{self.height}")
         self.root.configure(bg="#ffffff")
+        
+        # Imposta un'icona per la finestra
+        try:
+            # Percorso assoluto al file della directory corrente
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            # Vai alla directory principale del progetto
+            project_dir = os.path.dirname(current_dir)
+            # Percorso dell'icona nella cartella resources
+            icon_path = os.path.join(project_dir, "resources", "icon.png")
+            
+            if os.path.exists(icon_path):
+                # Crea un'icona per la finestra
+                icon = PhotoImage(file=icon_path)
+                self.root.iconphoto(True, icon)
+                
+                # Setup menu bar app if available
+                if MENU_BAR_AVAILABLE:
+                    self._setup_menu_bar(icon_path)
+            else:
+                print(f"Icona non trovata: {icon_path}")
+        except Exception as e:
+            print(f"Errore nel caricamento dell'icona: {e}")
         
         # Frame principale
         main_frame = tk.Frame(self.root, bg="#ffffff")
@@ -530,6 +594,80 @@ class GUI:
         
         # Focus iniziale sull'input
         self.message_input.focus_set()
+        
+        # Configure minimize behavior to hide to menu bar instead of minimizing
+        self.root.protocol("WM_DELETE_WINDOW", self._on_window_close)
+    
+    def _setup_menu_bar(self, icon_path):
+        """Setup the menu bar application."""
+        if MENU_BAR_AVAILABLE:
+            try:
+                # Create a separate process for the menu bar app instead of a thread
+                import subprocess
+                import sys
+                
+                # Create a simple script for the menu bar app
+                menu_bar_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "menu_bar_app.py")
+                
+ 
+                
+                # Launch the menu bar app in a separate process
+                self.menu_bar_process = subprocess.Popen([sys.executable, menu_bar_script, icon_path])
+                
+                # Set up periodic check for communication from the menu bar app
+                self.root.after(1000, self._check_menu_bar_signals)
+                
+            except Exception as e:
+                import traceback
+                print(f"Error setting up menu bar: {e}")
+                traceback.print_exc()
+
+    def _check_menu_bar_signals(self):
+        """Check for signals from the menu bar app."""
+        try:
+            # Check if the menu bar app wants to show the main window
+            if os.path.exists("/tmp/studywiz_show"):
+                os.remove("/tmp/studywiz_show")
+                self.root.deiconify()
+                self.root.lift()
+                
+            # Check if the menu bar app wants to quit
+            if os.path.exists("/tmp/studywiz_quit"):
+                os.remove("/tmp/studywiz_quit")
+                self._on_close()
+                return
+                
+        except Exception as e:
+            print(f"Error checking menu bar signals: {e}")
+        
+        # Continue checking if the app is still running
+        if self.is_running and self.root:
+            self.root.after(1000, self._check_menu_bar_signals)
+
+    def _on_close(self):
+        """Gestisce la chiusura dell'applicazione."""
+        if self.audio_recorder:
+            self.audio_recorder.close()
+        self.is_running = False
+        
+        # Terminate the menu bar process if it exists
+        if hasattr(self, 'menu_bar_process') and self.menu_bar_process:
+            try:
+                self.menu_bar_process.terminate()
+            except Exception as e:
+                print(f"Error terminating menu bar process: {e}")
+        
+        if self.root:
+            self.root.destroy()
+    
+    def _on_window_close(self):
+        """Handle window close event - hide to menu bar instead of closing."""
+        if MENU_BAR_AVAILABLE and self.menu_bar_app:
+            # Hide the window instead of closing
+            self.root.withdraw()
+        else:
+            # If no menu bar support, close normally
+            self._on_close()
     
     def _handle_recording(self, is_start):
         """
@@ -548,12 +686,13 @@ class GUI:
         else:
             # Termina la registrazione
             timestamp = datetime.datetime.now().strftime("%H:%M")
+            self.message_area.remove_last_bubble()
             
             if self.audio_recorder:
                 audio_file = self.audio_recorder.stop_recording()
                 
                 if audio_file:
-                    self.message_area.add_bubble(f"Registrazione completata! File: {os.path.basename(audio_file)}", 
+                    self.message_area.add_bubble(f"Messaggio vocale inviato", 
                                             timestamp, is_sent=True)
                 else:
                     self.message_area.add_bubble("Registrazione audio completata", 
@@ -589,7 +728,6 @@ class GUI:
         
         # Avvia il mainloop di tkinter
         self.is_running = True
-        self.root.protocol("WM_DELETE_WINDOW", self._on_close)  # Gestisci la chiusura della finestra
         self.root.mainloop()
         self.is_running = False
     
@@ -598,7 +736,13 @@ class GUI:
         if self.audio_recorder:
             self.audio_recorder.close()
         self.is_running = False
-        self.root.destroy()
+        
+        # Close menu bar app if it's running
+        if MENU_BAR_AVAILABLE and self.menu_bar_app:
+            rumps.quit_application()
+            
+        if self.root:
+            self.root.destroy()
     
     def start(self, threaded=False):
         """
@@ -635,8 +779,6 @@ class GUI:
         # Usa after per aggiungere il messaggio in modo thread-safe
         self.root.after(0, lambda: self.message_area.add_bubble(message, timestamp, is_sent=is_sent))
         return True
-
-
 # Solo per test - questo codice viene eseguito solo se gui.py è eseguito direttamente
 if __name__ == "__main__":
     # Crea e avvia l'interfaccia
