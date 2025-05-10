@@ -1,0 +1,305 @@
+2025-05-10 22:08:47,969 - INFO - Event: session_start - {'goals': ['Hackaton GDG development', 'using an llm to generate code']}
+2025-05-10 22:08:47,973 - INFO - Session tracking started: Generic Session
+2025-05-10 22:08:48,494 - INFO - Event: app_change - {'from': None, 'to': {'title': 'GDG-Hackaton_2025 — zsh — zsh (qterm) ▸ osascript — 157×46', 'app': 'Terminal'}, 'duration_previous': 0}
+2025-05-10 22:08:51,586 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — zsh — zsh (qterm) ▸ osascript — 157×46', 'app': 'Terminal'}, 'to': {'title': '', 'app': 'Finder'}, 'duration_previous': 3.62}
+2025-05-10 22:08:54,192 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:08:54,668 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Finder'}, 'to': {'title': 'GDG-Hackaton_2025 — 5d9b668 - Minor changes to req… (1 file)', 'app': 'Electron'}, 'duration_previous': 3.08}
+2025-05-10 22:08:56,134 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — 5d9b668 - Minor changes to req… (1 file)', 'app': 'Electron'}, 'to': {'title': '', 'app': 'Finder'}, 'duration_previous': 1.47}
+2025-05-10 22:08:56,225 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:08:57,582 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Finder'}, 'to': {'title': 'GDG-Hackaton_2025 — zsh — zsh (qterm) ▸ osascript — 157×46', 'app': 'Terminal'}, 'duration_previous': 1.45}
+2025-05-10 22:08:59,983 - INFO - Event: typed_for - {'duration_seconds': 8.65, 'total_typing_time': 8.65, 'window_context': {'title': 'GDG-Hackaton_2025 — zsh — zsh (qterm) ▸ osascript — 157×46', 'app': 'Terminal'}, 'session_number': 1}
+2025-05-10 22:09:01,808 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:09:03,412 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — zsh — zsh (qterm) ▸ osascript — 157×46', 'app': 'Terminal'}, 'to': {'title': 'Recents', 'app': 'Finder'}, 'duration_previous': 5.83}
+2025-05-10 22:09:07,458 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:09:07,805 - INFO - Event: app_change - {'from': {'title': 'Recents', 'app': 'Finder'}, 'to': {'title': '', 'app': 'Finder'}, 'duration_previous': 4.39}
+2025-05-10 22:09:09,337 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Finder'}, 'to': {'title': 'GDG-Hackaton_2025 — 5d9b668 - Minor changes to req… (1 file)', 'app': 'Electron'}, 'duration_previous': 1.53}
+2025-05-10 22:09:11,479 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:09:19,259 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:09:20,226 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:09:20,406 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — 5d9b668 - Minor changes to req… (1 file)', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 11.07}
+2025-05-10 22:09:22,439 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:09:25,109 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:09:38,172 - INFO - Event: idle_start - {'after_seconds': 10.95}
+2025-05-10 22:12:00,737 - INFO - Event: idle_end - {'duration_seconds': 142.57}
+2025-05-10 22:12:02,146 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:12:03,564 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': 'Spotify Free', 'app': 'Spotify'}, 'duration_previous': 163.16}
+2025-05-10 22:12:08,898 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:12:09,659 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:12:10,713 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:12:15,293 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:12:19,771 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:12:22,456 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:12:26,616 - INFO - Event: app_change - {'from': {'title': 'Spotify Free', 'app': 'Spotify'}, 'to': {'title': '', 'app': 'Spotify'}, 'duration_previous': 23.05}
+2025-05-10 22:12:28,196 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Spotify'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 1.58}
+2025-05-10 22:12:38,884 - INFO - Event: idle_start - {'after_seconds': 10.21}
+2025-05-10 22:13:50,425 - INFO - Event: periodic_summary - {'period': 'last_5_minutes', 'event_distribution': {'session_start': 1, 'app_change': 12, 'user_input': 16, 'typed_for': 1, 'idle_start': 2, 'idle_end': 1}, 'top_applications': {'Electron': 175.69, 'Spotify': 24.63, 'Finder': 10.46}, 'interaction_count': 3441, 'context_switches': 11, 'current_windows': [{'title': 'galaxy-trucker-rules-it.pdf – Page 13 of 24', 'app': 'Preview'}, {'title': 'ing-sw-2025-ungaro-sola-tavecchio-verrengia – SwarnMenu.java', 'app': 'idea'}, {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}], 'typing_stats': {'total_typing_time': 8.65, 'typing_sessions_count': 1, 'typing_time_in_period': 8.65, 'avg_session_duration': 8.65}}
+2025-05-10 22:15:33,585 - INFO - Event: idle_end - {'duration_seconds': 174.7}
+2025-05-10 22:15:43,630 - INFO - Event: idle_start - {'after_seconds': 10.12}
+2025-05-10 22:18:13,189 - INFO - Event: idle_end - {'duration_seconds': 149.55}
+2025-05-10 22:18:13,777 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:18:14,579 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:18:14,944 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:18:15,830 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:18:26,063 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:18:28,131 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:18:38,283 - INFO - Event: idle_start - {'after_seconds': 10.15}
+2025-05-10 22:18:42,661 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:18:43,306 - INFO - Event: idle_end - {'duration_seconds': 5.02}
+2025-05-10 22:18:44,027 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:18:52,729 - INFO - Event: periodic_summary - {'period': 'last_5_minutes', 'event_distribution': {'session_start': 1, 'app_change': 12, 'user_input': 24, 'typed_for': 1, 'idle_start': 4, 'idle_end': 4, 'periodic_summary': 1}, 'top_applications': {'Electron': 175.69, 'Spotify': 24.63, 'Finder': 10.46}, 'interaction_count': 4283, 'context_switches': 11, 'current_windows': [{'title': 'galaxy-trucker-rules-it.pdf – Page 13 of 24', 'app': 'Preview'}, {'title': 'ing-sw-2025-ungaro-sola-tavecchio-verrengia – SwarnMenu.java', 'app': 'idea'}, {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}], 'typing_stats': {'total_typing_time': 8.65, 'typing_sessions_count': 1, 'typing_time_in_period': 8.65, 'avg_session_duration': 8.65}}
+2025-05-10 22:18:54,343 - INFO - Event: idle_start - {'after_seconds': 10.32}
+2025-05-10 22:19:15,422 - INFO - Event: idle_end - {'duration_seconds': 21.08}
+2025-05-10 22:19:15,926 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:19:17,305 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'duration_previous': 409.11}
+2025-05-10 22:19:29,151 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:19:30,972 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:19:44,607 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:19:46,823 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'to': {'title': 'Resources and Credits', 'app': 'Arc'}, 'duration_previous': 29.52}
+2025-05-10 22:19:50,071 - INFO - Event: typed_for - {'duration_seconds': 3.34, 'total_typing_time': 11.99, 'window_context': {'title': 'Resources and Credits', 'app': 'Arc'}, 'session_number': 2}
+2025-05-10 22:19:53,107 - INFO - Event: app_change - {'from': {'title': 'Resources and Credits', 'app': 'Arc'}, 'to': {'title': '', 'app': 'Arc'}, 'duration_previous': 6.29}
+2025-05-10 22:19:54,820 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Arc'}, 'to': {'title': 'icns timer', 'app': 'Arc'}, 'duration_previous': 1.71}
+2025-05-10 22:19:55,740 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:19:56,724 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:19:57,918 - INFO - Event: app_change - {'from': {'title': 'icns timer', 'app': 'Arc'}, 'to': {'title': 'Timer Icons - 286 free Icons PNG, SVG, ICO or ICNS', 'app': 'Arc'}, 'duration_previous': 3.09}
+2025-05-10 22:20:03,959 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:05,493 - INFO - Event: app_change - {'from': {'title': 'Timer Icons - 286 free Icons PNG, SVG, ICO or ICNS', 'app': 'Arc'}, 'to': {'title': 'Clock hour timer watch - School & Education Icons', 'app': 'Arc'}, 'duration_previous': 7.58}
+2025-05-10 22:20:06,439 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:07,918 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:08,604 - INFO - Event: app_change - {'from': {'title': 'Clock hour timer watch - School & Education Icons', 'app': 'Arc'}, 'to': {'title': '', 'app': 'Arc'}, 'duration_previous': 3.11}
+2025-05-10 22:20:10,161 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Arc'}, 'to': {'title': 'clock,hour,timer,watch Icons', 'app': 'Arc'}, 'duration_previous': 1.56}
+2025-05-10 22:20:17,309 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:17,744 - INFO - Event: app_change - {'from': {'title': 'clock,hour,timer,watch Icons', 'app': 'Arc'}, 'to': {'title': 'Clock hour timer watch - School & Education Icons', 'app': 'Arc'}, 'duration_previous': 7.58}
+2025-05-10 22:20:19,296 - INFO - Event: app_change - {'from': {'title': 'Clock hour timer watch - School & Education Icons', 'app': 'Arc'}, 'to': {'title': 'Soluzioni – Gemini API – Google Cloud Console', 'app': 'Arc'}, 'duration_previous': 1.55}
+2025-05-10 22:20:20,959 - INFO - Event: app_change - {'from': {'title': 'Soluzioni – Gemini API – Google Cloud Console', 'app': 'Arc'}, 'to': {'title': 'vittoriosironi/GDG-Hackaton_2025', 'app': 'Arc'}, 'duration_previous': 1.66}
+2025-05-10 22:20:23,379 - INFO - Event: typed_for - {'duration_seconds': 31.03, 'total_typing_time': 43.02, 'window_context': {'title': 'vittoriosironi/GDG-Hackaton_2025', 'app': 'Arc'}, 'session_number': 3}
+2025-05-10 22:20:24,452 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:26,368 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:28,684 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:30,149 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:30,248 - INFO - Event: app_change - {'from': {'title': 'vittoriosironi/GDG-Hackaton_2025', 'app': 'Arc'}, 'to': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'duration_previous': 9.29}
+2025-05-10 22:20:33,519 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:34,716 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'to': {'title': 'Recents', 'app': 'Finder'}, 'duration_previous': 4.47}
+2025-05-10 22:20:35,518 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:36,478 - INFO - Event: app_change - {'from': {'title': 'Recents', 'app': 'Finder'}, 'to': {'title': 'Downloads', 'app': 'Finder'}, 'duration_previous': 1.76}
+2025-05-10 22:20:36,887 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:37,590 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:41,067 - INFO - Event: app_change - {'from': {'title': 'Downloads', 'app': 'Finder'}, 'to': {'title': 'GDG-Hackaton_2025 — Clock Hour Timer Watch.icns', 'app': 'Electron'}, 'duration_previous': 4.59}
+2025-05-10 22:20:43,507 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:43,816 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:44,182 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:20:52,400 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:21:04,118 - INFO - Event: typed_for - {'duration_seconds': 7.57, 'total_typing_time': 50.59, 'window_context': {'title': 'GDG-Hackaton_2025 — Clock Hour Timer Watch.icns', 'app': 'Electron'}, 'session_number': 4}
+2025-05-10 22:21:14,804 - INFO - Event: idle_start - {'after_seconds': 10.69}
+2025-05-10 22:21:31,867 - INFO - Event: idle_end - {'duration_seconds': 17.06}
+2025-05-10 22:21:39,800 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:21:40,693 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — Clock Hour Timer Watch.icns', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'duration_previous': 59.63}
+2025-05-10 22:21:44,134 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:21:47,449 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:22:02,617 - INFO - Event: typed_for - {'duration_seconds': 13.36, 'total_typing_time': 63.95, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 5}
+2025-05-10 22:22:09,817 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:22:15,217 - INFO - Event: typed_for - {'duration_seconds': 11.07, 'total_typing_time': 75.02, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 6}
+2025-05-10 22:22:19,635 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:22:23,182 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:22:31,720 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:22:38,665 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:22:40,214 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — Clock Hour Timer Watch.icns', 'app': 'Electron'}, 'duration_previous': 59.52}
+2025-05-10 22:22:41,233 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:22:42,842 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:22:43,366 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — Clock Hour Timer Watch.icns', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'duration_previous': 3.15}
+2025-05-10 22:22:50,333 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:22:51,098 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:23:01,504 - INFO - Event: typed_for - {'duration_seconds': 24.07, 'total_typing_time': 99.09, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 7}
+2025-05-10 22:23:14,249 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:23:20,578 - INFO - Event: typed_for - {'duration_seconds': 17.76, 'total_typing_time': 116.85, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 8}
+2025-05-10 22:23:27,148 - INFO - Event: typed_for - {'duration_seconds': 5.65, 'total_typing_time': 122.5, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 9}
+2025-05-10 22:23:40,302 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:23:48,800 - INFO - Event: typed_for - {'duration_seconds': 20.19, 'total_typing_time': 142.69, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 10}
+2025-05-10 22:23:52,633 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:23:55,738 - INFO - Event: periodic_summary - {'period': 'last_5_minutes', 'event_distribution': {'user_input': 55, 'app_change': 22, 'idle_start': 6, 'idle_end': 6, 'periodic_summary': 2, 'typed_for': 9}, 'top_applications': {'Electron': 741.09, 'Arc': 43.43, 'Spotify': 24.63}, 'interaction_count': 13089, 'context_switches': 29, 'current_windows': [{'title': 'galaxy-trucker-rules-it.pdf – Page 13 of 24', 'app': 'Preview'}, {'title': 'Downloads', 'app': 'Finder'}, {'title': 'ing-sw-2025-ungaro-sola-tavecchio-verrengia – SwarnMenu.java', 'app': 'idea'}, {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}], 'typing_stats': {'total_typing_time': 142.69, 'typing_sessions_count': 10, 'typing_time_in_period': 134.04, 'avg_session_duration': 14.27}}
+2025-05-10 22:24:34,684 - INFO - Event: typed_for - {'duration_seconds': 39.61, 'total_typing_time': 182.29, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 11}
+2025-05-10 22:24:44,692 - INFO - Event: idle_start - {'after_seconds': 10.01}
+2025-05-10 22:24:45,694 - INFO - Event: idle_end - {'duration_seconds': 1.0}
+2025-05-10 22:24:51,702 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:24:57,366 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:24:58,565 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:25:04,501 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:25:06,231 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:25:17,826 - INFO - Event: idle_start - {'after_seconds': 10.56}
+2025-05-10 22:25:45,931 - INFO - Event: idle_end - {'duration_seconds': 28.11}
+2025-05-10 22:25:57,981 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:18,799 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:20,018 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:21,982 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:27,316 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:33,535 - INFO - Event: typed_for - {'duration_seconds': 4.3, 'total_typing_time': 186.59, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 12}
+2025-05-10 22:26:36,063 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:40,448 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:50,985 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:52,014 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:52,630 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:53,330 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:54,630 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:26:59,633 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:01,213 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:04,865 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:18,149 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:18,913 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:34,434 - INFO - Event: typed_for - {'duration_seconds': 39.82, 'total_typing_time': 226.41, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 13}
+2025-05-10 22:27:40,830 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:41,598 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:47,686 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:48,814 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:51,864 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:52,946 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:27:57,697 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:28:00,324 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:28:06,480 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:28:08,047 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:28:10,179 - INFO - Event: typed_for - {'duration_seconds': 15.63, 'total_typing_time': 242.04, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 14}
+2025-05-10 22:28:11,513 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:28:15,665 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:28:23,615 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:28:25,196 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:01,112 - INFO - Event: periodic_summary - {'period': 'last_5_minutes', 'event_distribution': {'app_change': 14, 'user_input': 67, 'typed_for': 12, 'idle_start': 3, 'idle_end': 3, 'periodic_summary': 1}, 'top_applications': {'Electron': 741.09, 'Arc': 43.43, 'Spotify': 24.63}, 'interaction_count': 18235, 'context_switches': 29, 'current_windows': [{'title': 'galaxy-trucker-rules-it.pdf – Page 13 of 24', 'app': 'Preview'}, {'title': 'Downloads', 'app': 'Finder'}, {'title': 'ing-sw-2025-ungaro-sola-tavecchio-verrengia – SwarnMenu.java', 'app': 'idea'}, {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}], 'typing_stats': {'total_typing_time': 242.04, 'typing_sessions_count': 14, 'typing_time_in_period': 230.06, 'avg_session_duration': 17.29}}
+2025-05-10 22:29:02,707 - INFO - Event: idle_start - {'after_seconds': 10.28}
+2025-05-10 22:29:12,412 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:12,747 - INFO - Event: idle_end - {'duration_seconds': 10.04}
+2025-05-10 22:29:13,796 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:19,962 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:21,246 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:39,753 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:42,382 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:42,907 - INFO - Event: typed_for - {'duration_seconds': 1.84, 'total_typing_time': 243.88, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 15}
+2025-05-10 22:29:45,118 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:45,948 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:46,362 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:46,529 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:47,054 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:47,495 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:48,263 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:49,933 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:29:53,081 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:30:03,925 - INFO - Event: idle_start - {'after_seconds': 10.04}
+2025-05-10 22:30:21,993 - INFO - Event: idle_end - {'duration_seconds': 18.07}
+2025-05-10 22:30:41,278 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:30:46,741 - INFO - Event: typed_for - {'duration_seconds': 4.35, 'total_typing_time': 248.23, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 16}
+2025-05-10 22:30:56,879 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:08,296 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:09,161 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:10,228 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:10,861 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:14,128 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:15,528 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:22,404 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:23,278 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:24,897 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:28,703 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:30,212 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:33,719 - INFO - Event: typed_for - {'duration_seconds': 21.45, 'total_typing_time': 269.68, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 17}
+2025-05-10 22:31:35,595 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:36,886 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:40,176 - INFO - Event: typed_for - {'duration_seconds': 2.42, 'total_typing_time': 272.1, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 18}
+2025-05-10 22:31:44,320 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:49,261 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:31:54,177 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:02,113 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:02,263 - INFO - Event: typed_for - {'duration_seconds': 9.59, 'total_typing_time': 281.69, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 19}
+2025-05-10 22:32:03,937 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:05,745 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:07,045 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:12,411 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:16,714 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:17,577 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:20,387 - INFO - Event: typed_for - {'duration_seconds': 11.38, 'total_typing_time': 293.07, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 20}
+2025-05-10 22:32:24,459 - INFO - Event: typed_for - {'duration_seconds': 3.05, 'total_typing_time': 296.11, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 21}
+2025-05-10 22:32:30,167 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:35,327 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:39,012 - INFO - Event: typed_for - {'duration_seconds': 4.88, 'total_typing_time': 300.99, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 22}
+2025-05-10 22:32:41,744 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:45,567 - INFO - Event: typed_for - {'duration_seconds': 2.28, 'total_typing_time': 303.27, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 23}
+2025-05-10 22:32:46,862 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:47,727 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:32:51,629 - INFO - Event: typed_for - {'duration_seconds': 2.51, 'total_typing_time': 305.78, 'window_context': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'session_number': 24}
+2025-05-10 22:33:01,348 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:33:02,361 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:33:23,642 - INFO - Event: idle_start - {'after_seconds': 10.53}
+2025-05-10 22:34:04,475 - INFO - Event: periodic_summary - {'period': 'last_5_minutes', 'event_distribution': {'user_input': 79, 'idle_start': 4, 'idle_end': 3, 'typed_for': 13, 'periodic_summary': 1}, 'top_applications': {'Electron': 741.09, 'Arc': 43.43, 'Spotify': 24.63}, 'interaction_count': 24429, 'context_switches': 29, 'current_windows': [{'title': 'galaxy-trucker-rules-it.pdf – Page 13 of 24', 'app': 'Preview'}, {'title': 'Downloads', 'app': 'Finder'}, {'title': 'ing-sw-2025-ungaro-sola-tavecchio-verrengia – SwarnMenu.java', 'app': 'idea'}, {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}], 'typing_stats': {'total_typing_time': 305.78, 'typing_sessions_count': 24, 'typing_time_in_period': 123.5, 'avg_session_duration': 12.74}}
+2025-05-10 22:34:44,949 - INFO - Event: idle_end - {'duration_seconds': 81.31}
+2025-05-10 22:34:45,813 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:34:47,361 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:34:49,926 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:34:51,260 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:34:54,177 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:35:05,034 - INFO - Event: idle_start - {'after_seconds': 10.86}
+2025-05-10 22:38:07,213 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'to': {'title': '', 'app': 'Electron'}, 'duration_previous': 923.85}
+2025-05-10 22:38:07,735 - INFO - Event: idle_end - {'duration_seconds': 182.7}
+2025-05-10 22:48:56,429 - INFO - Event: idle_start - {'after_seconds': 649.19}
+2025-05-10 22:48:57,753 - INFO - Event: idle_end - {'duration_seconds': 1.33}
+2025-05-10 22:48:59,807 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:49:02,318 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:49:04,772 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — zsh — zsh (qterm) ▸ osascript — 157×46', 'app': 'Terminal'}, 'duration_previous': 657.55}
+2025-05-10 22:49:05,439 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:49:06,588 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — zsh — zsh (qterm) ▸ osascript — 157×46', 'app': 'Terminal'}, 'to': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'duration_previous': 1.82}
+2025-05-10 22:49:16,865 - INFO - Event: idle_start - {'after_seconds': 10.28}
+2025-05-10 22:49:31,921 - INFO - Event: idle_end - {'duration_seconds': 15.05}
+2025-05-10 22:49:32,118 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:49:35,049 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:49:45,988 - INFO - Event: idle_start - {'after_seconds': 10.94}
+2025-05-10 22:49:49,011 - INFO - Event: idle_end - {'duration_seconds': 3.02}
+2025-05-10 22:49:51,132 - INFO - Event: periodic_summary - {'period': 'last_5_minutes', 'event_distribution': {'user_input': 71, 'typed_for': 11, 'periodic_summary': 2, 'idle_start': 7, 'idle_end': 6, 'app_change': 3}, 'top_applications': {'Electron': 2322.49, 'Arc': 43.43, 'Spotify': 24.63}, 'interaction_count': 25763, 'context_switches': 32, 'current_windows': [{'title': 'galaxy-trucker-rules-it.pdf – Page 13 of 24', 'app': 'Preview'}, {'title': 'Downloads', 'app': 'Finder'}, {'title': 'ing-sw-2025-ungaro-sola-tavecchio-verrengia – SwarnMenu.java', 'app': 'idea'}, {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}], 'typing_stats': {'total_typing_time': 305.78, 'typing_sessions_count': 24, 'typing_time_in_period': 79.38, 'avg_session_duration': 12.74}}
+2025-05-10 22:50:13,105 - INFO - Event: idle_start - {'after_seconds': 10.67}
+2025-05-10 22:51:00,285 - INFO - Event: idle_end - {'duration_seconds': 47.18}
+2025-05-10 22:51:00,816 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:01,978 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — macos_timer.py', 'app': 'Electron'}, 'to': {'title': 'vittoriosironi/GDG-Hackaton_2025', 'app': 'Arc'}, 'duration_previous': 115.39}
+2025-05-10 22:51:04,847 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:10,200 - INFO - Event: app_change - {'from': {'title': 'vittoriosironi/GDG-Hackaton_2025', 'app': 'Arc'}, 'to': {'title': '', 'app': 'Arc'}, 'duration_previous': 8.22}
+2025-05-10 22:51:11,833 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Arc'}, 'to': {'title': 'Chat | Google AI Studio', 'app': 'Arc'}, 'duration_previous': 1.63}
+2025-05-10 22:51:13,837 - INFO - Event: typed_for - {'duration_seconds': 7.54, 'total_typing_time': 313.32, 'window_context': {'title': 'Chat | Google AI Studio', 'app': 'Arc'}, 'session_number': 25}
+2025-05-10 22:51:16,231 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:16,782 - INFO - Event: app_change - {'from': {'title': 'Chat | Google AI Studio', 'app': 'Arc'}, 'to': {'title': '', 'app': 'Arc'}, 'duration_previous': 4.95}
+2025-05-10 22:51:18,395 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Arc'}, 'to': {'title': 'Get API key | Google AI Studio', 'app': 'Arc'}, 'duration_previous': 1.61}
+2025-05-10 22:51:23,048 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:24,613 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:24,679 - INFO - Event: app_change - {'from': {'title': 'Get API key | Google AI Studio', 'app': 'Arc'}, 'to': {'title': 'Chat | Google AI Studio', 'app': 'Arc'}, 'duration_previous': 6.28}
+2025-05-10 22:51:25,396 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:25,913 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:26,366 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:26,847 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:38,430 - INFO - Event: idle_start - {'after_seconds': 10.01}
+2025-05-10 22:51:38,514 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:39,431 - INFO - Event: idle_end - {'duration_seconds': 1.0}
+2025-05-10 22:51:40,931 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:43,830 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:49,413 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:56,346 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:51:58,550 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:52:01,213 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:52:02,281 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:52:02,729 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:52:15,249 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:52:27,618 - INFO - Event: idle_start - {'after_seconds': 10.24}
+2025-05-10 22:52:30,627 - INFO - Event: idle_end - {'duration_seconds': 3.01}
+2025-05-10 22:52:31,413 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:52:35,531 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:52:48,050 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:53:01,631 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:53:17,562 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:53:28,870 - INFO - Event: idle_start - {'after_seconds': 10.21}
+2025-05-10 22:54:06,019 - INFO - Event: idle_end - {'duration_seconds': 37.15}
+2025-05-10 22:54:06,349 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:54:07,898 - INFO - Event: app_change - {'from': {'title': 'Chat | Google AI Studio', 'app': 'Arc'}, 'to': {'title': 'Texts', 'app': 'Texts'}, 'duration_previous': 163.22}
+2025-05-10 22:54:10,416 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:54:22,083 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:54:24,045 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:54:26,034 - INFO - Event: app_change - {'from': {'title': 'Texts', 'app': 'Texts'}, 'to': {'title': 'Untitled', 'app': 'Arc'}, 'duration_previous': 18.14}
+2025-05-10 22:54:26,618 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:54:27,395 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:54:27,853 - INFO - Event: app_change - {'from': {'title': 'Untitled', 'app': 'Arc'}, 'to': {'title': 'GDG AI HACK Arena #gIf8ayNc • lichess.org', 'app': 'Arc'}, 'duration_previous': 1.82}
+2025-05-10 22:54:28,613 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:54:29,848 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:54:31,173 - INFO - Event: app_change - {'from': {'title': 'GDG AI HACK Arena #gIf8ayNc • lichess.org', 'app': 'Arc'}, 'to': {'title': '', 'app': 'Finder'}, 'duration_previous': 3.32}
+2025-05-10 22:54:44,184 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:54:44,962 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Finder'}, 'to': {'title': 'GDG-Hackaton_2025 — zsh — zsh (qterm) ▸ osascript — 157×46', 'app': 'Terminal'}, 'duration_previous': 13.79}
+2025-05-10 22:54:45,148 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-10 22:54:46,927 - INFO - Event: session_end - {'duration': '0:45:58.958057', 'total_typing_time': 313.32, 'typing_sessions_count': 25, 'typing_percentage': 11.36}
+2025-05-10 22:54:46,927 - INFO - Session tracking stopped: Generic Session - Total typing time: 313.32s across 25 sessions
