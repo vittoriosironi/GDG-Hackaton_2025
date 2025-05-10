@@ -38,8 +38,8 @@ class SessionTracker:
         
         # Configure logging
         logging.basicConfig(level=logging.INFO, 
-            format='%(asctime)s - %(levelname)s - %(message)s')
-                           #filename=f"session_{self.start_time.strftime('%Y%m%d_%H%M%S')}.log")
+            format='%(asctime)s - %(levelname)s - %(message)s',
+                           filename=f"session_{self.start_time.strftime('%Y%m%d_%H%M%S')}.log")
         
         self.logger = logging.getLogger(__name__)
         
@@ -408,7 +408,7 @@ if __name__ == "__main__":
     # Initialize the tracker with session name and goals
     tracker = SessionTracker(
         session_name="Generic Session",
-        user_goals=["Research competitors", "Draft outline for presentation"]
+        user_goals=["Write code for an hackaton app", "Using the LLM to generate code"]
     )
     
     # Start tracking
