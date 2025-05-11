@@ -5,3 +5,7 @@ google-generativeai
 pyautogui
 pytesseract
 Pillow
+pyaudio
+pydub
+speech_recognition
+rumps

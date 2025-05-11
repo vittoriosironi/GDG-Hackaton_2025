@@ -8,6 +8,7 @@ import wave
 import numpy as np
 import time
 import sys
+import json
 from pydub import AudioSegment
 import speech_recognition as sr
 
@@ -897,6 +898,59 @@ class GUI:
         Args:
             response_text (str): The response from Gemini
         """
+        try:
+            # First, try to find and extract JSON content
+            json_start = response_text.find('```json')
+            if json_start != -1:
+                # Find the closing ```
+                json_end = response_text.find('```', json_start + 7)
+                if json_end != -1:
+                    # Extract the JSON content
+                    json_content = response_text[json_start + 7:json_end].strip()
+                    try:
+                        response_data = json.loads(json_content)
+                        
+                        if isinstance(response_data, dict):
+                            action = response_data.get('action')
+                            if action == 'timer':
+                                minutes = response_data.get('minutes')
+                                if minutes is not None:
+                                    try:
+                                        minutes = int(minutes)
+                                        if minutes > 0:
+                                            self.post_message(f"I've started a timer for {minutes} minutes. I'll let you know when it's time!")
+                                        else:
+                                            self.post_message("I'm sorry, but the timer duration needs to be a positive number. Could you please specify how many minutes you'd like to set the timer for?")
+                                    except ValueError:
+                                        self.post_message("I couldn't understand the timer duration. Could you please specify a number of minutes? For example: 'set a timer for 25 minutes'")
+                            elif action == 'start_analysis':
+                                self.post_message("I've started tracking your activity. I'll keep an eye on how you're spending your time and provide insights when you're ready!")
+                            elif action == 'end_analysis':
+                                self.post_message("I've stopped tracking your activity. You can check the insights in the log files.")
+                            else:
+                                self.post_message("I received an unknown action from Gemini. Please try your command again.")
+                        return
+                    except json.JSONDecodeError:
+                        # If JSON parsing fails, fall back to regular message
+                        pass
+            
+            # If we didn't find JSON or JSON parsing failed, look for a regular message
+            message_start = response_text.find('```message')
+            if message_start != -1:
+                # Find the closing ```
+                message_end = response_text.find('```', message_start + 9)
+                if message_end != -1:
+                    # Extract the message content
+                    message_content = response_text[message_start + 9:message_end].strip()
+                    self.post_message(message_content)
+                    return
+            
+            # If we get here, we didn't find any special format, so treat the whole response as a message
+            self.post_message(response_text)
+            
+        except Exception as e:
+            self.post_message(f"Error processing Gemini response: {str(e)}")
+        
         # Remove the "thinking" message (assuming it's the last bubble)
         self.message_area.remove_last_bubble()
         
@@ -910,6 +964,9 @@ class GUI:
         Args:
             goal_text (str): The user's input to process
         """
+        def callback(response_text):
+            self.handle_gemini_response(response_text)
+            
         # Show a "thinking" message
         self.message_area.add_bubble(
             "Elaborazione in corso...",

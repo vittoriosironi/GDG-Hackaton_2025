@@ -3,6 +3,8 @@ import time
 import threading
 import google.generativeai as genai
 from datetime import datetime
+import json
+import re
 
 # Configure Gemini API
 def configure_gemini():
@@ -53,38 +55,62 @@ def process_gemini_response(response, callback_function):
     Process Gemini's response and execute the appropriate action
     
     Args:
-        response: The response from Gemini
+        response: The Gemini response object
         callback_function: Function to update the GUI
     """
     try:
-        # Extract the action from Gemini's response
+        # Get the response text
         response_text = response.text
         
-        if "timer" in response_text.lower() and "minute" in response_text.lower():
-            # Extract minutes
-            import re
-            minutes_match = re.search(r'(\d+)\s*minute', response_text.lower())
-            if minutes_match:
-                minutes = int(minutes_match.group(1))
-                # Start activity analysis along with timer
-                start_activity_analysis(callback_function)
-                start_timer(minutes, callback_function)
-                callback_function(f"Starting timer for {minutes} minutes and beginning activity tracking")
-            else:
-                callback_function("I couldn't determine how many minutes to set the timer for.")
+        # Try to parse as JSON
+        try:
+            # First, find the JSON part in the response
+            json_start = response_text.find('```json')
+            if json_start != -1:
+                # Find the closing ```
+                json_end = response_text.find('```', json_start + 7)
+                if json_end != -1:
+                    # Extract the JSON content
+                    json_content = response_text[json_start + 7:json_end].strip()
+                    try:
+                        response_data = json.loads(json_content)
+                        
+                        if isinstance(response_data, dict):
+                            action = response_data.get('action')
+                            if action == 'timer':
+                                minutes = response_data.get('minutes')
+                                if minutes is not None:
+                                    try:
+                                        minutes = int(minutes)
+                                        if minutes > 0:
+                                            start_timer(minutes, callback_function)
+                                            callback_function(f"I've started a timer for {minutes} minutes. I'll let you know when it's time!")
+                                        else:
+                                            callback_function("I'm sorry, but the timer duration needs to be a positive number. Could you please specify how many minutes you'd like to set the timer for?")
+                                    except ValueError:
+                                        callback_function("I couldn't understand the timer duration. Could you please specify a number of minutes? For example: 'set a timer for 25 minutes'")
+                            elif action == 'start_analysis':
+                                start_activity_analysis(callback_function)
+                                callback_function("I've started tracking your activity. I'll keep an eye on how you're spending your time and provide insights when you're ready!")
+                            elif action == 'end_analysis':
+                                end_activity_analysis(callback_function)
+                                callback_function("I've stopped tracking your activity. You can check the insights in the log files.")
+                            else:
+                                callback_function("I received an unknown action from Gemini. Please try your command again.")
+                        return
+                    except json.JSONDecodeError:
+                        callback_function("I couldn't understand the JSON response from Gemini. Please try your command again.")
+                        return
+            
+        except Exception as e:
+            callback_function(f"Error processing Gemini response: {str(e)}")
+            return
+            
+        # If we didn't find JSON, treat the response as a regular message
+        callback_function(response_text)
         
-        elif "start" in response_text.lower() and "analysis" in response_text.lower():
-            start_activity_analysis(callback_function)
-            callback_function("Starting activity analysis. I'll track your work session.")
-        
-        elif "end" in response_text.lower() and "analysis" in response_text.lower():
-            end_activity_analysis(callback_function)
-        
-        else:
-            callback_function("I'm not sure what action to take. You can ask me to start a timer, start activity analysis, or end activity analysis.")
-    
     except Exception as e:
-        callback_function(f"Error processing response: {str(e)}")
+        callback_function(f"Error processing Gemini response: {str(e)}")
 
 def start_timer(minutes, callback_function):
     """
