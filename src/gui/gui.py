@@ -8,13 +8,16 @@ import wave
 import numpy as np
 import time
 import sys
+import json
+from pydub import AudioSegment
+import speech_recognition as sr
 
 import rumps
 MENU_BAR_AVAILABLE = True
 
 # Fix the import by adding the parent directory to sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from operator_gemini import call_gemini_api
+import functions
 AUTOMATION_AVAILABLE = True
 
 
@@ -523,8 +526,21 @@ class GUI:
         # Menu bar app
         self.menu_bar_app = None
         self.menu_bar_thread = None
+        
+        # Timer variables
+        self.timer_active = False
+        self.timer_thread = None
+        self.timer_end_time = None
+        
+        # Initialize Gemini API (will be used when the GUI starts)
+        self.model = None
     
     def setup_ui(self):
+            # Initialize Gemini
+        try:
+            self.model = functions.configure_gemini()
+        except Exception as e:
+            print(f"Error initializing Gemini API: {e}")
         # Creazione della finestra principale
         self.root = tk.Tk()
         self.root.title(self.title)
@@ -570,10 +586,10 @@ class GUI:
                            fg=self.ACCENT_COLOR, bg="#FFFFFF")
         logo_label.pack(side=tk.LEFT, padx=15, pady=10)
         
-        # Sottotitolo
-        subtitle_label = tk.Label(header_frame, text="25:09", 
+        # Timer label - initially empty
+        self.timer_label = tk.Label(header_frame, text="", 
                                font=("Arial", 15), fg="#888888", bg="#FFFFFF")
-        subtitle_label.pack(side=tk.RIGHT, padx=25, pady=15)
+        self.timer_label.pack(side=tk.RIGHT, padx=25, pady=15)
         
         # Area messaggi (scrollable con bolle)
         self.message_area = BubbleCanvas(main_frame)
@@ -698,7 +714,7 @@ class GUI:
             if self.audio_recorder:
                 audio_file = self.audio_recorder.stop_recording()
                 
-                if audio_file:
+                if (audio_file):
                     self.message_area.add_bubble(f"Messaggio vocale inviato", 
                                         timestamp, is_sent=True)
                     
@@ -720,61 +736,90 @@ class GUI:
 
     def _process_audio_for_gemini(self, audio_file):
         """
-        Processa il file audio per l'invio a Gemini.
+        Process audio file for Gemini.
         
-        1. Converte l'audio in testo usando speech_recognition
-        2. Invia il testo riconosciuto a Gemini per l'automazione
+        1. Convert audio to text using speech recognition
+        2. Send recognized text to functions.py for Gemini processing
         
         Args:
-            audio_file (str): Percorso al file audio da elaborare
+            audio_file (str): Path to audio file
         """
         recognized_text = None
         
-        # Prova a convertire l'audio in testo
+        # Try to convert audio to text
         try:
-            # Usa pydub per convertire in formato compatibile se necessario
             from pydub import AudioSegment
             import speech_recognition as sr
             
-            # Converti da WAV a formato compatibile con speech_recognition
+            # Convert from WAV to optimized format
             sound = AudioSegment.from_wav(audio_file)
             
-            # Salva in formato ottimizzato per SpeechRecognition
+            # Save in format optimized for SpeechRecognition
             converted_file = audio_file.replace(".wav", "_converted.wav")
             sound.export(converted_file, format="wav")
             
-            # Riconosci il testo dall'audio
+            # Recognize text from audio
             recognizer = sr.Recognizer()
             with sr.AudioFile(converted_file) as source:
+                # Adjust for ambient noise to improve recognition
+                recognizer.adjust_for_ambient_noise(source)
                 audio_data = recognizer.record(source)
-                recognized_text = recognizer.recognize_google(audio_data, language="it-IT")
                 
-            # Rimuovi il file temporaneo
-            os.remove(converted_file)
+                try:
+                    # Try using Google's speech recognition
+                    recognized_text = recognizer.recognize_google(audio_data, language="en-US")
+                except sr.UnknownValueError:
+                    # Speech was unintelligible
+                    self.post_message("I couldn't understand what you said. Please try speaking more clearly.", is_sent=False)
+                except sr.RequestError as e:
+                    # API was unreachable or unresponsive
+                    self.post_message(f"Google Speech Recognition service error: {e}", is_sent=False)
             
-        except ImportError:
-            # Librerie mancanti
-            self.post_message("⚠️ Librerie per il riconoscimento vocale non disponibili. Installa speech_recognition e pydub.", is_sent=False)
-            recognized_text = "apri il browser"  # Testo di fallback
+            # Clean up files regardless of success/failure
+            try:
+                # Remove temporary file
+                if os.path.exists(converted_file):
+                    os.remove(converted_file)
+                
+                # Also remove original audio file to save space
+                if os.path.exists(audio_file):
+                    os.remove(audio_file)
+            except Exception as e:
+                print(f"Error removing temporary files: {e}")
+                
+        except ImportError as e:
+            self.post_message(f"⚠️ Required libraries not available: {e}", is_sent=False)
+            return
         except Exception as e:
-            # Altri errori
-            print(f"Errore nel riconoscimento vocale: {e}")
-            recognized_text = "apri il browser"  # Testo di fallback
+            self.post_message(f"⚠️ Error processing audio: {str(e)}", is_sent=False)
+            print(f"Audio processing error: {e}")
+            return
         
-        # Mostra il testo riconosciuto
+        # Show recognized text and process with Gemini if recognition was successful
         if recognized_text:
-            self.post_message(f"📝 Ho trascritto: \"{recognized_text}\"", is_sent=False)
+            self.post_message(f"📝 I transcribed: \"{recognized_text}\"", is_sent=False)
             
-            # Breve pausa prima di inviare a Gemini
+            # Short pause before sending to Gemini
             time.sleep(1)
             
-            # Invia il testo riconosciuto a Gemini
-            if AUTOMATION_AVAILABLE:
-                self.run_automation(recognized_text)
-            else:
-                self.post_message("⚠️ L'automazione non è disponibile. Verifica l'installazione di operator_gemini.", is_sent=False)
+            # Process the recognized text using functions.py
+            try:
+                # Show a "thinking" message
+                self.message_area.add_bubble(
+                    "Processing your request...",
+                    datetime.datetime.now().strftime("%H:%M"),
+                    is_sent=False
+                )
+                
+                # Process the user input using functions.py
+                functions.process_user_input(recognized_text, self.handle_gemini_response)
+                
+            except Exception as e:
+                self.message_area.remove_last_bubble()
+                self.post_message(f"Error processing your request: {str(e)}", is_sent=False)
+                print(f"Gemini processing error: {e}")
         else:
-            self.post_message("❌ Non sono riuscito a comprendere l'audio. Puoi riprovare o digitare il tuo messaggio?", is_sent=False)
+            self.post_message("❌ I couldn't understand the audio. Please try again or type your message.", is_sent=False)
     
     def _send_message(self, event=None):
         message = self.message_input.get()
@@ -806,6 +851,9 @@ class GUI:
         if self.audio_recorder:
             self.audio_recorder.close()
         self.is_running = False
+        
+        # Cancel any active timer
+        self.timer_active = False
         
         # Close menu bar app if it's running
         if MENU_BAR_AVAILABLE and self.menu_bar_app:
@@ -850,31 +898,182 @@ class GUI:
         self.root.after(0, lambda: self.message_area.add_bubble(message, timestamp, is_sent=is_sent))
         return True
     
-    def run_automation(self, goal_text):
+    def handle_gemini_response(self, response_text):
         """
-        Avvia un'automazione GUI basata su Gemini
+        Callback function for Gemini responses
         
         Args:
-            goal_text (str): L'obiettivo dell'automazione
+            response_text (str): The response from Gemini
         """
-        if not AUTOMATION_AVAILABLE:
+        try:
+            # First, try to find and extract JSON content
+            json_start = response_text.find('```json')
+            if json_start != -1:
+                # Find the closing ```
+                json_end = response_text.find('```', json_start + 7)
+                if json_end != -1:
+                    # Extract the JSON content
+                    json_content = response_text[json_start + 7:json_end].strip()
+                    try:
+                        response_data = json.loads(json_content)
+                        print(f"DEBUG: Parsed JSON from Gemini: {response_data}")
+                        
+                        if isinstance(response_data, dict):
+                            action = response_data.get('action')
+                            if action == 'timer':
+                                print("DEBUG: Timer action detected in Gemini response")
+                                minutes = response_data.get('minutes')
+                                if minutes is not None:
+                                    try:
+                                        minutes = int(minutes)
+                                        if minutes > 0:
+                                            print(f"DEBUG: Starting timer for {minutes} minutes")
+                                            self.post_message(f"I've started a timer for {minutes} minutes. I'll let you know when it's time!")
+                                            self.start_timer(minutes)
+                                        else:
+                                            self.post_message("I'm sorry, but the timer duration needs to be a positive number. Could you please specify how many minutes you'd like to set the timer for?")
+                                    except ValueError:
+                                        self.post_message("I couldn't understand the timer duration. Could you please specify a number of minutes? For example: 'set a timer for 25 minutes'")
+                            elif action == 'start_analysis':
+                                self.post_message("I've started tracking your activity. I'll keep an eye on how you're spending your time and provide insights when you're ready!")
+                            elif action == 'end_analysis':
+                                self.post_message("I've stopped tracking your activity. You can check the insights in the log files.")
+                            else:
+                                self.post_message("I received an unknown action from Gemini. Please try your command again.")
+                        return
+                    except json.JSONDecodeError as e:
+                        print(f"DEBUG: JSON decode error: {e}")
+                        # If JSON parsing fails, fall back to regular message
+                        pass
+            
+            # If we didn't find JSON or JSON parsing failed, look for a regular message
+            message_start = response_text.find('```message')
+            if (message_start != -1):
+                # Find the closing ```
+                message_end = response_text.find('```', message_start + 9)
+                if message_end != -1:
+                    # Extract the message content
+                    message_content = response_text[message_start + 9:message_end].strip()
+                    self.post_message(message_content)
+                    return
+            
+            # If we get here, we didn't find any special format, so treat the whole response as a message
+            self.post_message(response_text)
+            
+        except Exception as e:
+            print(f"DEBUG: Error in handle_gemini_response: {e}")
+            self.post_message(f"Error processing Gemini response: {str(e)}")
+        
+        # Remove the "thinking" message (assuming it's the last bubble)
+        self.message_area.remove_last_bubble()
+    
+    def run_automation(self, goal_text):
+        """
+        Process user input using functions.py to interact with Gemini
+        
+        Args:
+            goal_text (str): The user's input to process
+        """
+        # Show a "thinking" message
+        self.message_area.add_bubble(
+            "Elaborazione in corso...",
+            datetime.datetime.now().strftime("%H:%M"),
+            is_sent=False
+        )
+        
+        try:
+            # Process the user input through Gemini
+            model = functions.configure_gemini()
+            
+            # Create the system prompt that instructs Gemini on the available actions
+            system_prompt = """
+            You are a productivity assistant that helps with focus sessions.
+            Based on user input, determine which of these actions to take:
+            1. Start a timer for X minutes (where X is a number mentioned by the user)
+            2. Start activity analysis (begin tracking what the user is doing)
+            3. End activity analysis (stop tracking and provide insights)
+            
+            Respond in JSON format with:
+            {"action": "timer", "minutes": X} OR
+            {"action": "start_analysis"} OR
+            {"action": "end_analysis"}
+            """
+            
+            try:
+                # Process with custom callback that uses our timer implementation
+                response = model.generate_content([system_prompt, goal_text])
+                self.handle_gemini_response(response.text)
+            except Exception as e:
+                self.message_area.add_bubble(
+                    f"Errore durante l'elaborazione: {str(e)}",
+                    datetime.datetime.now().strftime("%H:%M"),
+                    is_sent=False
+                )
+        except Exception as e:
             self.message_area.add_bubble(
-                "Automazione GUI non disponibile. Verifica l'installazione di operator_gemini.",
+                f"Errore durante l'elaborazione: {str(e)}",
                 datetime.datetime.now().strftime("%H:%M"),
                 is_sent=False
             )
-            return
-        
-        # Aggiungi un messaggio all'interfaccia
-        self.message_area.add_bubble(
-            f"Avvio automazione: '{goal_text}'", 
-            datetime.datetime.now().strftime("%H:%M"),
-            is_sent=True
-        )
-        
-        # Avvia l'automazione passando la classe GUI per la comunicazione
-        self.automation_thread = call_gemini_api(goal_text, app=self)
     
+    def start_timer(self, minutes):
+        """
+        Start a timer for the specified number of minutes
+        
+        Args:
+            minutes (int): Timer duration in minutes
+        """
+        print(f"DEBUG: start_timer called with {minutes} minutes")
+        # Cancel existing timer if running
+        self.cancel_timer()
+        
+        # Set up new timer
+        self.timer_active = True
+        self.timer_end_time = time.time() + (minutes * 60)
+        
+        # Start the update timer in the GUI thread
+        self._update_timer()
+        
+    def cancel_timer(self):
+        """Cancel the currently running timer"""
+        print("DEBUG: cancel_timer called")
+        self.timer_active = False
+        self.timer_end_time = None
+        
+        # Clear the timer display
+        if self.root and hasattr(self, 'timer_label'):
+            print("DEBUG: clearing timer label")
+            self.root.after(0, lambda: self.timer_label.config(text=""))
+            
+    def _update_timer(self):
+        """Update the timer label with the remaining time"""
+        if not self.timer_active or not self.timer_end_time or not self.root:
+            print("DEBUG: _update_timer called but conditions not met")
+            return
+            
+        # Calculate remaining time
+        remaining_seconds = max(0, self.timer_end_time - time.time())
+        
+        if remaining_seconds <= 0:
+            # Timer has finished
+            print("DEBUG: Timer finished")
+            self.timer_active = False
+            self.timer_end_time = None
+            self.timer_label.config(text="")
+            self.post_message("Your timer has finished!", is_sent=False)
+            return
+            
+        # Format minutes:seconds
+        minutes = int(remaining_seconds // 60)
+        seconds = int(remaining_seconds % 60)
+        time_str = f"{minutes:02d}:{seconds:02d}"
+        
+        print(f"DEBUG: Updating timer label to {time_str}")
+        # Update the label in the GUI thread
+        self.timer_label.config(text=time_str)
+        
+        # Schedule the next update in 1 second
+        self.root.after(1000, self._update_timer)
     
     
 # Solo per test - questo codice viene eseguito solo se gui.py è eseguito direttamente
