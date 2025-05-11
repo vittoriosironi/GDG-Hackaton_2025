@@ -3,11 +3,23 @@ import json
 import psutil
 import platform
 import pywinctl as pwc
-from datetime import datetime
+from datetime import datetime, timedelta
 from pynput import mouse, keyboard
 import threading
 import re
 import logging
+import google.generativeai as genai
+from google.generativeai import types
+
+# Configure Gemini
+GOOGLE_API_KEY = "AIzaSyC8K8ymeN6RTDmGsXVnKUGfEDQBSlMBp0I"
+try:
+    genai.configure(api_key=GOOGLE_API_KEY)
+    MODEL_NAME = "gemini-2.0-flash-lite"
+    model = genai.GenerativeModel(MODEL_NAME)
+except Exception as e:
+    print(f"Warning: Failed to initialize Gemini API: {str(e)}")
+    model = None
 
 class SessionTracker:
     def __init__(self, session_name, user_goals=None):
@@ -41,12 +53,109 @@ class SessionTracker:
             format='%(asctime)s - %(levelname)s - %(message)s',
                            filename=f"session_{self.start_time.strftime('%Y%m%d_%H%M%S')}.log")
         
+        # Configure Gemini logger
+        gemini_log_file = f"gemini_{self.start_time.strftime('%Y%m%d_%H%M%S')}.log"
+        gemini_handler = logging.FileHandler(gemini_log_file)
+        gemini_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+        self.gemini_logger = logging.getLogger('gemini_logger')
+        self.gemini_logger.setLevel(logging.INFO)
+        self.gemini_logger.addHandler(gemini_handler)
+        
         self.logger = logging.getLogger(__name__)
         
+    def analyze_focus(self):
+        """Analyze the last 5 minutes of logs to determine focus"""
+        while self.is_tracking:
+            try:
+                self.logger.info("Starting focus analysis...")
+                # Get current time and calculate 5 minutes ago
+                current_time = datetime.now()
+                five_minutes_ago = current_time - timedelta(minutes=5)
+                
+                # Filter logs from the last 5 minutes
+                recent_logs = []
+                with open(f"session_{self.start_time.strftime('%Y%m%d_%H%M%S')}.log", 'r') as f:
+                    for line in f:
+                        # Parse timestamp from log line
+                        try:
+                            timestamp_str = line.split(' - ')[0]
+                            log_time = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S,%f')
+                            if log_time >= five_minutes_ago:
+                                recent_logs.append(line)
+                        except Exception as e:
+                            continue
+                
+                # Prepare data for Gemini analysis
+                recent_logs_str = "\n".join(recent_logs)
+                prompt = f"""Analyze the user's focus based on the following activity logs:
+                User goals: {self.user_goals}
+                Recent activity (last 5 minutes):
+                {recent_logs_str}
+                
+                Please provide:
+                1. A focus score between 0 and 1 (where 1 is fully focused)
+                2. A brief explanation of the focus level
+                3. Any recommendations for improvement
+
+                Return the result in JSON format: {{"focus_score": X, "explanation": "...", "recommendations": ["..."]}}
+                """
+                
+                # Use Gemini API for analysis
+                if model is None:
+                    self.logger.error("Gemini API not initialized")
+                    return
+                    
+                try:
+                    response = model.generate_content(prompt)
+                    
+                    # Extract JSON from response
+                    response_text = response.text
+                    json_start = response_text.find('{')
+                    json_end = response_text.rfind('}') + 1
+                    focus_analysis = json.loads(response_text[json_start:json_end])
+                    
+                    # Log Gemini response
+                    self.gemini_logger.info(f"Gemini response: {response_text}")
+                    
+                except Exception as e:
+                    self.logger.error(f"Error with Gemini API: {str(e)}")
+                    self.logger.error(f"Response text: {response_text if 'response' in locals() else 'No response'}")
+                    self.gemini_logger.error(f"Error with Gemini API: {str(e)}")
+                    self.gemini_logger.error(f"Response text: {response_text if 'response' in locals() else 'No response'}")
+                    raise
+                try:    
+                # Log the focus analysis
+                    self.log_event("focus_analysis", {
+                        "focus_score": focus_analysis["focus_score"],
+                        "explanation": focus_analysis["explanation"],
+                        "recommendations": focus_analysis["recommendations"],
+                        "timestamp": current_time.isoformat()
+                    })
+                    self.logger.info(f"Focus analysis completed. Score: {focus_analysis['focus_score']}")
+                    
+                except Exception as e:
+                    self.logger.error(f"Error processing Gemini response: {str(e)}")
+                    self.log_event("focus_analysis", {
+                        "error": str(e),
+                        "timestamp": current_time.isoformat()
+                    })
+                
+                # Wait for 5 minutes before next analysis
+                time.sleep(60)
+                
+            except Exception as e:
+                self.logger.error(f"Error in focus analysis: {str(e)}")
+                time.sleep(60)  # Wait a minute before retrying
+
     def start_tracking(self):
         """Start all tracking mechanisms"""
         self.is_tracking = True
         self.log_event("session_start", {"goals": self.user_goals}, track_idle=False)
+        
+        # Start focus analysis thread
+        focus_thread = threading.Thread(target=self.analyze_focus, daemon=True)
+        focus_thread.start()
+        self.tracking_threads.append(focus_thread)
         
         # Start window tracking thread
         window_thread = threading.Thread(target=self._track_active_windows)
