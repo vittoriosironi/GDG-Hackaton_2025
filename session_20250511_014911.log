@@ -1,0 +1,138 @@
+2025-05-11 01:49:11,996 - INFO - Event: session_start - {'goals': ['Write UI for an app', 'Code on Vs Code']}
+2025-05-11 01:49:11,997 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:49:11,999 - INFO - Session tracking started: Generic Session
+2025-05-11 01:49:13,454 - INFO - Event: app_change - {'from': None, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 0}
+2025-05-11 01:49:17,023 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:49:18,450 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:49:21,749 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:49:23,254 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:49:24,848 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:49:27,136 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:49:27,914 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:49:28,981 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:49:39,109 - INFO - Event: idle_start - {'after_seconds': 10.11}
+2025-05-11 01:50:07,253 - INFO - Event: idle_end - {'duration_seconds': 28.14}
+2025-05-11 01:50:11,998 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:50:14,048 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:50:14,798 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:50:15,348 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:50:15,781 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:50:39,375 - INFO - Event: idle_start - {'after_seconds': 10.57}
+2025-05-11 01:50:42,389 - INFO - Event: idle_end - {'duration_seconds': 3.02}
+2025-05-11 01:50:50,031 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:03,489 - INFO - Event: idle_start - {'after_seconds': 10.58}
+2025-05-11 01:51:06,506 - INFO - Event: idle_end - {'duration_seconds': 3.02}
+2025-05-11 01:51:08,764 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:09,681 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:11,499 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:12,002 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:51:12,332 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:14,017 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:15,230 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:17,501 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:19,149 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:20,755 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:21,547 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:21,998 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:22,548 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:24,004 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:25,182 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:35,814 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:36,864 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:37,730 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:39,132 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:40,280 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:41,714 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:42,667 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:43,307 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:44,334 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:44,780 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:51:58,685 - INFO - Event: idle_start - {'after_seconds': 10.49}
+2025-05-11 01:52:11,413 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:52:11,738 - INFO - Event: idle_end - {'duration_seconds': 13.05}
+2025-05-11 01:52:12,005 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:52:12,964 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:52:17,349 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:52:17,781 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:52:18,266 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:52:19,231 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:52:21,414 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:52:22,310 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': '', 'app': 'Electron'}, 'duration_previous': 190.31}
+2025-05-11 01:52:23,916 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'duration_previous': 1.61}
+2025-05-11 01:52:56,229 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:52:58,134 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 34.22}
+2025-05-11 01:52:59,079 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:52:59,632 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:52:59,882 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:01,515 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:01,731 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:01,880 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:02,930 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:03,290 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': '', 'app': 'Electron'}, 'duration_previous': 5.16}
+2025-05-11 01:53:03,913 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:05,016 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 1.73}
+2025-05-11 01:53:05,163 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:06,130 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:06,331 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:07,048 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:07,280 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:07,847 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:08,480 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:10,515 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:12,010 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:53:22,564 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:23,333 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'duration_previous': 18.32}
+2025-05-11 01:53:46,278 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:47,450 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 24.12}
+2025-05-11 01:53:55,947 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:53:57,308 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'duration_previous': 9.86}
+2025-05-11 01:54:04,330 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:54:05,442 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 8.13}
+2025-05-11 01:54:12,014 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:54:16,301 - INFO - Event: periodic_summary - {'period': 'last_5_minutes', 'event_distribution': {'session_start': 1, 'app_change': 10, 'user_input': 65, 'idle_start': 4, 'idle_end': 4}, 'top_applications': {'Electron': 293.44}, 'interaction_count': 8703, 'context_switches': 9, 'current_windows': [{'title': 'galaxy-trucker-rules-it.pdf – Page 13 of 24', 'app': 'Preview'}, {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, {'title': 'Mac Miller - Hand Me Downs', 'app': 'Spotify'}], 'typing_stats': {'total_typing_time': 0, 'typing_sessions_count': 0, 'typing_time_in_period': 0, 'avg_session_duration': 0}}
+2025-05-11 01:54:18,143 - INFO - Event: idle_start - {'after_seconds': 10.08}
+2025-05-11 01:54:30,192 - INFO - Event: idle_end - {'duration_seconds': 12.05}
+2025-05-11 01:54:31,829 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:54:32,514 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': '', 'app': 'Electron'}, 'duration_previous': 27.07}
+2025-05-11 01:54:34,116 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'duration_previous': 1.6}
+2025-05-11 01:54:35,745 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:54:35,928 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:54:36,613 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:54:37,047 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:54:38,432 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:55:06,783 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:55:08,459 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 34.34}
+2025-05-11 01:55:12,020 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:55:41,525 - INFO - Event: typed_for - {'duration_seconds': 31.7, 'total_typing_time': 31.7, 'window_context': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'session_number': 1}
+2025-05-11 01:55:45,647 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:55:46,723 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'duration_previous': 38.26}
+2025-05-11 01:56:07,488 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:56:08,997 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:56:10,026 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 23.3}
+2025-05-11 01:56:12,026 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:56:22,586 - INFO - Event: idle_start - {'after_seconds': 10.94}
+2025-05-11 01:56:33,625 - INFO - Event: idle_end - {'duration_seconds': 11.04}
+2025-05-11 01:56:45,672 - INFO - Event: idle_start - {'after_seconds': 10.42}
+2025-05-11 01:56:52,703 - INFO - Event: idle_end - {'duration_seconds': 7.03}
+2025-05-11 01:56:53,637 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:56:55,029 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:57:06,758 - INFO - Event: idle_start - {'after_seconds': 10.81}
+2025-05-11 01:57:12,027 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:57:48,934 - INFO - Event: idle_end - {'duration_seconds': 42.18}
+2025-05-11 01:57:52,062 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:57:53,267 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'duration_previous': 103.24}
+2025-05-11 01:58:12,032 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:58:17,479 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:58:18,904 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — session_20250511_014911.log', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 25.64}
+2025-05-11 01:58:20,110 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:58:22,043 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:58:41,998 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:58:55,122 - INFO - Event: typed_for - {'duration_seconds': 31.08, 'total_typing_time': 62.78, 'window_context': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'session_number': 2}
+2025-05-11 01:59:07,113 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:59:12,038 - ERROR - Error in focus analysis: name 'timedelta' is not defined
+2025-05-11 01:59:13,461 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:59:14,496 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:59:19,525 - INFO - Event: periodic_summary - {'period': 'last_5_minutes', 'event_distribution': {'user_input': 71, 'idle_start': 5, 'idle_end': 5, 'app_change': 16, 'periodic_summary': 1, 'typed_for': 2}, 'top_applications': {'Electron': 546.91}, 'interaction_count': 15093, 'context_switches': 16, 'current_windows': [{'title': 'galaxy-trucker-rules-it.pdf – Page 13 of 24', 'app': 'Preview'}, {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, {'title': 'Spotify', 'app': 'Spotify'}], 'typing_stats': {'total_typing_time': 62.78, 'typing_sessions_count': 2, 'typing_time_in_period': 62.78, 'avg_session_duration': 31.39}}
+2025-05-11 01:59:20,259 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 01:59:23,139 - INFO - Event: session_end - {'duration': '0:10:11.142805', 'total_typing_time': 62.78, 'typing_sessions_count': 2, 'typing_percentage': 10.27}
+2025-05-11 01:59:23,139 - INFO - Session tracking stopped: Generic Session - Total typing time: 62.78s across 2 sessions

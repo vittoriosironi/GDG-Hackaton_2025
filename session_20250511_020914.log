@@ -1,0 +1,54 @@
+2025-05-11 02:09:14,291 - INFO - Event: session_start - {'goals': ['Write UI for an app', 'Code on Vs Code']}
+2025-05-11 02:09:14,291 - INFO - Starting focus analysis...
+2025-05-11 02:09:14,297 - INFO - Session tracking started: Generic Session
+2025-05-11 02:09:14,964 - INFO - Event: app_change - {'from': None, 'to': {'title': 'GDG-Hackaton_2025 — session_20250511_020702.log', 'app': 'Electron'}, 'duration_previous': 0}
+2025-05-11 02:09:15,623 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:09:16,343 - INFO - Event: focus_analysis - {'focus_score': 0.0, 'explanation': "The activity log indicates the start of a session with the stated goals. Since only the session initialization is present, it's impossible to determine if the user is focused on their goals or not. The focus level is considered neutral at the beginning.", 'recommendations': ["Monitor the user's actions within VS Code (e.g., file opens, edits, code compiles) to understand their active task.", "Track UI design activity or references (e.g., design tool usage, reading documentation relevant to the app's UI).", 'Continue to monitor for a longer duration to gain more meaningful insights.'], 'timestamp': '2025-05-11T02:09:14.291877'}
+2025-05-11 02:09:16,344 - INFO - Focus analysis completed. Score: 0.0
+2025-05-11 02:09:16,786 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — session_20250511_020702.log', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 2.49}
+2025-05-11 02:09:27,333 - INFO - Event: idle_start - {'after_seconds': 10.55}
+2025-05-11 02:09:49,843 - INFO - Event: idle_end - {'duration_seconds': 22.51}
+2025-05-11 02:09:53,105 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:09:59,390 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:04,039 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:15,829 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:16,387 - INFO - Starting focus analysis...
+2025-05-11 02:10:16,618 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': '', 'app': 'Electron'}, 'duration_previous': 59.83}
+2025-05-11 02:10:18,275 - INFO - Event: app_change - {'from': {'title': '', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — session_20250511_020914.log', 'app': 'Electron'}, 'duration_previous': 1.66}
+2025-05-11 02:10:19,012 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:19,181 - INFO - Event: focus_analysis - {'focus_score': 0.1, 'explanation': 'The user started a session with the goals of writing UI and coding in VS Code. Initial focus analysis resulted in a neutral score (0.0).  Subsequent activity shows the user interacting with an Electron app (likely VS Code or an app built using it), and switching between files within it (Electron). The presence of idle time suggests potential distractions or breaks. While they are using an application related to the user goals, the initial activity is limited, and the long idle time along with only mouse clicks makes it difficult to determine how productive they are on their stated goals. The user has been opening up the file, which could indicate that they are actively working. But without any other data, a low focus score is given.', 'recommendations': ["Monitor the user's activity within the Electron app more closely, looking for code edits, file saves, and other interactions related to UI development or coding in VS Code.", "Correlate the Electron app activity with the project's structure (e.g., if they are opening UI related files such as HTML, CSS, Javascript, then this would increase the focus score).", "Analyze the content of the opened file(s) for clues about the user's current task.", 'Track more user input types like keyboard strokes.', 'Consider incorporating a method to automatically detect if the application being used has a UI related feature to increase the focus score.'], 'timestamp': '2025-05-11T02:10:16.388931'}
+2025-05-11 02:10:19,181 - INFO - Focus analysis completed. Score: 0.1
+2025-05-11 02:10:28,722 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:35,049 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:36,017 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — session_20250511_020914.log', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 17.74}
+2025-05-11 02:10:38,891 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:41,955 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': '', 'app': 'WhatsApp'}, 'duration_previous': 5.94}
+2025-05-11 02:10:42,731 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:43,657 - INFO - Event: app_change - {'from': {'title': '', 'app': 'WhatsApp'}, 'to': {'title': '\u200eWhatsApp', 'app': 'WhatsApp'}, 'duration_previous': 1.7}
+2025-05-11 02:10:45,924 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:47,127 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:47,491 - INFO - Event: app_change - {'from': {'title': '\u200eWhatsApp', 'app': 'WhatsApp'}, 'to': {'title': '', 'app': 'WhatsApp'}, 'duration_previous': 3.83}
+2025-05-11 02:10:49,235 - INFO - Event: app_change - {'from': {'title': '', 'app': 'WhatsApp'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 1.74}
+2025-05-11 02:10:50,438 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:10:56,516 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:11:00,955 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:11:05,128 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:11:06,148 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — session_20250511_020914.log', 'app': 'Electron'}, 'duration_previous': 16.91}
+2025-05-11 02:11:08,622 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:11:13,392 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:11:14,688 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:11:15,172 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:11:19,190 - INFO - Starting focus analysis...
+2025-05-11 02:11:22,144 - INFO - Event: focus_analysis - {'focus_score': 0.1, 'explanation': "The user's focus is low. While the user is interacting with Electron apps (likely VS Code) associated with the stated goals and switching between files, the activity primarily consists of mouse clicks and includes a significant period of idle time and a switch to WhatsApp. The limited activity and brief period of engagement in the Electron app suggests a lack of concentrated effort on coding or UI development.", 'recommendations': ['Monitor for more direct indicators of coding activity within the Electron app, such as code edits, file saves, and language-specific actions (e.g., Python syntax completion).', 'Correlate file openings with project structure to see if they are opening UI related files (e.g. HTML, CSS, javascript etc).', 'Track and analyze keyboard strokes to assess coding productivity more accurately.', 'Consider implementing a feature to automatically recognize UI-related functionalities within the application being used to boost the focus score.'], 'timestamp': '2025-05-11T02:11:19.190533'}
+2025-05-11 02:11:22,145 - INFO - Focus analysis completed. Score: 0.1
+2025-05-11 02:11:23,888 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:12:19,841 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:12:21,377 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — session_20250511_020914.log', 'app': 'Electron'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'duration_previous': 75.23}
+2025-05-11 02:12:22,145 - INFO - Starting focus analysis...
+2025-05-11 02:12:22,988 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:12:26,376 - INFO - Event: focus_analysis - {'focus_score': 0.1, 'explanation': "The user's focus is consistently low. While the user is interacting with an Electron app (likely VS Code), indicated by file switching and a few interactions with the `activity_tracker.py` file, the activity is dominated by mouse clicks. There is also significant idle time and a switch to WhatsApp. The limited activity indicative of coding, along with distractions, suggest a lack of concentrated effort towards the stated goals of writing UI and coding.", 'recommendations': ['Monitor for direct coding actions within the Electron app like code edits, file saves, and language-specific features (e.g., auto-completion in VS Code).', 'Correlate file openings with the project structure to determine if UI-related files (e.g., HTML, CSS, JavaScript) are being accessed.', 'Track and analyze keyboard strokes to gauge coding productivity more precisely.', 'Consider implementing a system to automatically identify UI-related functionalities or tools within the application to improve focus assessment.'], 'timestamp': '2025-05-11T02:12:22.145799'}
+2025-05-11 02:12:26,377 - INFO - Focus analysis completed. Score: 0.1
+2025-05-11 02:12:26,705 - INFO - Event: user_input - {'type': 'mouse_click'}
+2025-05-11 02:12:29,052 - INFO - Event: typed_for - {'duration_seconds': 88.18, 'total_typing_time': 88.18, 'window_context': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'Electron'}, 'session_number': 1}
+2025-05-11 02:12:29,052 - INFO - Event: session_end - {'duration': '0:03:14.761436', 'total_typing_time': 88.18, 'typing_sessions_count': 1, 'typing_percentage': 45.27}
+2025-05-11 02:12:29,052 - INFO - Session tracking stopped: Generic Session - Total typing time: 88.18s across 1 sessions
