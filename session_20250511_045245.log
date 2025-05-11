@@ -1,7 +1,0 @@
-2025-05-11 04:52:45,028 - INFO - Event: session_start - {'goals': ['Write UI for an app', 'Code on Vs Code']}
-2025-05-11 04:52:45,033 - INFO - Session tracking started: Generic Session
-2025-05-11 04:52:45,650 - INFO - Event: app_change - {'from': None, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'duration_previous': 0}
-2025-05-11 04:52:48,831 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'to': {'title': 'GDG-Hackaton_2025 — session_20250511_045245.log', 'app': 'zed'}, 'duration_previous': 3.8}
-2025-05-11 04:52:50,750 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — session_20250511_045245.log', 'app': 'zed'}, 'to': {'title': '', 'app': 'zed'}, 'duration_previous': 1.92}
-2025-05-11 04:53:20,596 - INFO - Event: session_end - {'duration': '0:00:35.567824', 'total_typing_time': 0, 'typing_sessions_count': 0, 'typing_percentage': 0}
-2025-05-11 04:53:20,596 - INFO - Session tracking stopped: Generic Session - Total typing time: 0s across 0 sessions

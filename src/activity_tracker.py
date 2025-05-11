@@ -9,11 +9,13 @@ import threading
 import re
 import logging
 import os
-from google import genai
+import google.generativeai as genai
 from PIL import Image
 from io import BytesIO
 import base64
 import pyscreenshot as ImageGrab
+import productivity_analyzer as prodanalyzer
+import macos_timer
 
 # Configure Gemini
 GOOGLE_API_KEY = "AIzaSyC8K8ymeN6RTDmGsXVnKUGfEDQBSlMBp0I"
@@ -44,7 +46,7 @@ class SessionTracker:
         self.idle_threshold = 10  # seconds
         self.summarization_interval = 5 * 60  # seconds
         self.tracking_threads = []
-        
+        self.previous_analysis = []
         self.last_screenshot = {
             "path": None,
             "reason": None
@@ -65,26 +67,26 @@ class SessionTracker:
         self.screenshot_count = 0
         self.recent_activity = []  # Store recent activities for analysis
         
+        self.events_window = 20
+        
         # Configure logging
         logging.basicConfig(level=logging.INFO, 
             format='%(asctime)s - %(levelname)s - %(message)s',
                            filename=f"session_{self.start_time.strftime('%Y%m%d_%H%M%S')}.log")
-<<<<<<< Updated upstream
-                
         self.logger = logging.getLogger(__name__)
         
-   
-=======
+        self.last_events = []
 
-        self.logger = logging.getLogger(__name__)
+        self.prodanalyzer = prodanalyzer.ProductivityAnalysis()
         
-
->>>>>>> Stashed changes
+        
     def start_tracking(self):
         """Start all tracking mechanisms"""
         self.is_tracking = True
+        self.previous_analysis = []
+        print("Starting session tracking...")
         self.log_event("session_start", {"goals": self.user_goals}, track_idle=False)
-        
+        print("Session tracking started")
     
         # Start window tracking thread
         window_thread = threading.Thread(target=self._track_active_windows)
@@ -92,7 +94,7 @@ class SessionTracker:
         window_thread.start()
         self.tracking_threads.append(window_thread)
         
-        # Start input tracking
+        # # Start input tracking
         self._setup_input_listeners()
         
         # Start idle detection thread
@@ -107,7 +109,7 @@ class SessionTracker:
         typing_thread.start()
         self.tracking_threads.append(typing_thread)
         
-        # Start Gemini analysis thread
+        #Start Gemini analysis thread
         if self.gemini_api_key:
             # Create screenshots directory if it doesn't exist
             os.makedirs(self.screenshot_directory, exist_ok=True)
@@ -119,7 +121,7 @@ class SessionTracker:
         else:
             self.logger.warning("GEMINI_API_KEY not set, screenshot analysis disabled")
         
-        # # Start periodic summary thread
+        # Start periodic summary thread
         summary_thread = threading.Thread(target=self._periodic_summarization)
         summary_thread.daemon = True
         summary_thread.start()
@@ -149,6 +151,9 @@ class SessionTracker:
                 
         self.logger.info(f"Session tracking stopped: {self.session_name} - Total typing time: {round(self.total_typing_time, 2)}s across {self.typing_sessions_count} sessions")
         
+        self.prodanalyzer.save_to_db()
+        
+        
     def log_event(self, event_type, data=None, track_idle=True):
         """Log a specific event with timestamp"""
         event = {
@@ -169,7 +174,9 @@ class SessionTracker:
             self.last_activity_time = time.time()
         
         # Log significant events
-        self.logger.info(f"Event: {event_type} - {data}")
+        event_str = f"Event: {event_type} - {data}"
+        self.logger.info(event_str)
+        self.previous_analysis.append(event_str)
     
     def add_manual_checkpoint(self, description):
         """Allow user to manually mark an important moment"""
@@ -248,11 +255,11 @@ class SessionTracker:
     def _setup_input_listeners(self):
         """Setup keyboard and mouse event listeners"""
         # Keyboard listener
-        self.keyboard_listener = keyboard.Listener(
-            on_press=self._on_key_press,
-            on_release=self._on_key_release)
-        self.keyboard_listener.daemon = True
-        self.keyboard_listener.start()
+        # self.keyboard_listener = keyboard.Listener(
+        #     on_press=self._on_key_press,
+        #     on_release=self._on_key_release)
+        # self.keyboard_listener.daemon = True
+        # self.keyboard_listener.start()
         
         # Mouse listener
         self.mouse_listener = mouse.Listener(
@@ -460,6 +467,29 @@ class SessionTracker:
         self.typing_active = False
         self.typing_start_time = None
         # We don't reset interaction_count because it's a session-wide metric
+    
+    def _workflow_analysis(self):
+        """Analyze the workflow and suggest improvements"""
+        # This is a placeholder for future implementation
+        
+        #self.previous_analysis = []
+        
+        while self.is_tracking:
+            
+            if(len(self.last_events) >= self.events_window):
+                
+                suggestion = self.prodanalyzer.analyze_productivity_chunk(self.last_events, self.previous_analysis)
+                
+                self.last_events = []
+
+                if suggestion != None:
+                    macos_timer.show_notification(
+                        title="Workflow Analysis Suggestion",
+                        message=suggestion,
+                        sound=True
+                    )
+            
+            time.sleep(1)
     
     def _gemini_productivity_analysis(self):
         """Thread that periodically asks Gemini AI if it's worth taking a screenshot"""

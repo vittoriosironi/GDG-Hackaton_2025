@@ -11,6 +11,9 @@ import sys
 import json
 from pydub import AudioSegment
 import speech_recognition as sr
+from gemini_rag import rag
+from activity_tracker import SessionTracker
+import gemini 
 
 import rumps
 MENU_BAR_AVAILABLE = True
@@ -500,6 +503,7 @@ class BubbleCanvas(tk.Frame):
 # Modify GUI class to support menu bar
 class GUI:
     def __init__(self, title="StudyWiz", width=500, height=600):
+        gemini.init()
         # Definisci i colori qui per evitare variabili globali
         self.SENT_BG = "#0078FF"
         self.RECEIVED_BG = "#E5E5EA"
@@ -527,13 +531,10 @@ class GUI:
         self.menu_bar_app = None
         self.menu_bar_thread = None
         
-        # Timer variables
-        self.timer_active = False
-        self.timer_thread = None
-        self.timer_end_time = None
-        
         # Initialize Gemini API (will be used when the GUI starts)
         self.model = None
+
+        self.session_tracker = SessionTracker("Study Sesion", ["I am gonna study for 25 minutes", "I am gonna learn more about mechanics"])
     
     def setup_ui(self):
             # Initialize Gemini
@@ -586,10 +587,6 @@ class GUI:
                            fg=self.ACCENT_COLOR, bg="#FFFFFF")
         logo_label.pack(side=tk.LEFT, padx=15, pady=10)
         
-        # Timer label - initially empty
-        self.timer_label = tk.Label(header_frame, text="", 
-                               font=("Arial", 15), fg="#888888", bg="#FFFFFF")
-        self.timer_label.pack(side=tk.RIGHT, padx=25, pady=15)
         
         # Area messaggi (scrollable con bolle)
         self.message_area = BubbleCanvas(main_frame)
@@ -598,6 +595,11 @@ class GUI:
         # Frame per l'area di input del messaggio
         input_frame = tk.Frame(main_frame, bg="#e0e0e0")
         input_frame.pack(fill=tk.X, side=tk.BOTTOM, padx=10, pady=10)
+        
+        # Timer label - initially empty
+        self.timer_label = tk.Label(header_frame, text="", 
+                                font=("Arial", 15), fg="#888888", bg="#FFFFFF")
+        self.timer_label.pack(side=tk.RIGHT, padx=25, pady=15)
         
         # Campo di input per il messaggio con bordi arrotondati
         self.message_input = RoundedEntry(input_frame, width=350, height=40, 
@@ -714,7 +716,7 @@ class GUI:
             if self.audio_recorder:
                 audio_file = self.audio_recorder.stop_recording()
                 
-                if (audio_file):
+                if audio_file:
                     self.message_area.add_bubble(f"Messaggio vocale inviato", 
                                         timestamp, is_sent=True)
                     
@@ -852,9 +854,6 @@ class GUI:
             self.audio_recorder.close()
         self.is_running = False
         
-        # Cancel any active timer
-        self.timer_active = False
-        
         # Close menu bar app if it's running
         if MENU_BAR_AVAILABLE and self.menu_bar_app:
             rumps.quit_application()
@@ -897,7 +896,8 @@ class GUI:
         # Usa after per aggiungere il messaggio in modo thread-safe
         self.root.after(0, lambda: self.message_area.add_bubble(message, timestamp, is_sent=is_sent))
         return True
-    
+    # Add this new method to your GUI class:
+
     def handle_gemini_response(self, response_text):
         """
         Callback function for Gemini responses
@@ -916,39 +916,50 @@ class GUI:
                     json_content = response_text[json_start + 7:json_end].strip()
                     try:
                         response_data = json.loads(json_content)
-                        print(f"DEBUG: Parsed JSON from Gemini: {response_data}")
-                        
+                        print(f"Parsed JSON: {response_data}")
                         if isinstance(response_data, dict):
                             action = response_data.get('action')
-                            if action == 'timer':
-                                print("DEBUG: Timer action detected in Gemini response")
-                                minutes = response_data.get('minutes')
+                            if action == 'start_session':
+                                self.post_message("I've started tracking your activity. I'll keep an eye on how you're spending your time and provide insights when you're ready!")
+                                
+                                self.session_tracker.start_tracking()
+                                print("Session started")
+                                minutes = response_data.get('timer_minutes')
                                 if minutes is not None:
                                     try:
                                         minutes = int(minutes)
                                         if minutes > 0:
-                                            print(f"DEBUG: Starting timer for {minutes} minutes")
                                             self.post_message(f"I've started a timer for {minutes} minutes. I'll let you know when it's time!")
                                             self.start_timer(minutes)
                                         else:
                                             self.post_message("I'm sorry, but the timer duration needs to be a positive number. Could you please specify how many minutes you'd like to set the timer for?")
                                     except ValueError:
                                         self.post_message("I couldn't understand the timer duration. Could you please specify a number of minutes? For example: 'set a timer for 25 minutes'")
-                            elif action == 'start_analysis':
-                                self.post_message("I've started tracking your activity. I'll keep an eye on how you're spending your time and provide insights when you're ready!")
-                            elif action == 'end_analysis':
+                                
+                            elif action == 'end_session':
                                 self.post_message("I've stopped tracking your activity. You can check the insights in the log files.")
+                                self.session_tracker.stop_tracking()
+                                self.session_tracker.prodanalyzer.save_to_db()
+                            elif action == 'during_session_interaction':
+                                response_data = response_data.get('response')
+                                message = rag(response_data)
+                                self.post_message(message)
+                                return # Azione gestita
+                            elif action == 'general_command':
+                                response_data = response_data.get('response')
+                                message = rag(response_data)
+                                self.post_message(message)
+                                return # Azione gestita
                             else:
                                 self.post_message("I received an unknown action from Gemini. Please try your command again.")
                         return
-                    except json.JSONDecodeError as e:
-                        print(f"DEBUG: JSON decode error: {e}")
+                    except json.JSONDecodeError:
                         # If JSON parsing fails, fall back to regular message
                         pass
             
             # If we didn't find JSON or JSON parsing failed, look for a regular message
             message_start = response_text.find('```message')
-            if (message_start != -1):
+            if message_start != -1:
                 # Find the closing ```
                 message_end = response_text.find('```', message_start + 9)
                 if message_end != -1:
@@ -961,11 +972,13 @@ class GUI:
             self.post_message(response_text)
             
         except Exception as e:
-            print(f"DEBUG: Error in handle_gemini_response: {e}")
             self.post_message(f"Error processing Gemini response: {str(e)}")
         
         # Remove the "thinking" message (assuming it's the last bubble)
         self.message_area.remove_last_bubble()
+        
+        # Post the actual response
+        #self.post_message(response_text, is_sent=False)
     
     def run_automation(self, goal_text):
         """
@@ -974,6 +987,9 @@ class GUI:
         Args:
             goal_text (str): The user's input to process
         """
+        def callback(response_text):
+            self.handle_gemini_response(response_text)
+            
         # Show a "thinking" message
         self.message_area.add_bubble(
             "Elaborazione in corso...",
@@ -982,33 +998,8 @@ class GUI:
         )
         
         try:
-            # Process the user input through Gemini
-            model = functions.configure_gemini()
-            
-            # Create the system prompt that instructs Gemini on the available actions
-            system_prompt = """
-            You are a productivity assistant that helps with focus sessions.
-            Based on user input, determine which of these actions to take:
-            1. Start a timer for X minutes (where X is a number mentioned by the user)
-            2. Start activity analysis (begin tracking what the user is doing)
-            3. End activity analysis (stop tracking and provide insights)
-            
-            Respond in JSON format with:
-            {"action": "timer", "minutes": X} OR
-            {"action": "start_analysis"} OR
-            {"action": "end_analysis"}
-            """
-            
-            try:
-                # Process with custom callback that uses our timer implementation
-                response = model.generate_content([system_prompt, goal_text])
-                self.handle_gemini_response(response.text)
-            except Exception as e:
-                self.message_area.add_bubble(
-                    f"Errore durante l'elaborazione: {str(e)}",
-                    datetime.datetime.now().strftime("%H:%M"),
-                    is_sent=False
-                )
+            # Process the user input using functions.py
+            functions.process_user_input(goal_text, self.handle_gemini_response)
         except Exception as e:
             self.message_area.add_bubble(
                 f"Errore durante l'elaborazione: {str(e)}",
@@ -1061,6 +1052,12 @@ class GUI:
             self.timer_end_time = None
             self.timer_label.config(text="")
             self.post_message("Your timer has finished!", is_sent=False)
+            
+            # Handle stop tracking
+            self.session_tracker.stop_tracking()
+            
+            self.session_tracker.prodanalyzer.save_to_db()
+            
             return
             
         # Format minutes:seconds
@@ -1068,7 +1065,6 @@ class GUI:
         seconds = int(remaining_seconds % 60)
         time_str = f"{minutes:02d}:{seconds:02d}"
         
-        print(f"DEBUG: Updating timer label to {time_str}")
         # Update the label in the GUI thread
         self.timer_label.config(text=time_str)
         

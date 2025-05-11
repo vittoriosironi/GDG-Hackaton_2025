@@ -5,14 +5,9 @@ import google.generativeai as genai
 from datetime import datetime
 import json
 import re
+import gemini
 
 # Configure Gemini API
-def configure_gemini():
-    api_key = "AIzaSyC8K8ymeN6RTDmGsXVnKUGfEDQBSlMBp0I"
-    if not api_key:
-        raise ValueError("GOOGLE_API_KEY environment variable not found")
-    genai.configure(api_key=api_key)
-    return genai.GenerativeModel('gemini-2.0-flash')
 
 # Global variables
 activity_log = []
@@ -28,25 +23,39 @@ def process_user_input(user_input, callback_function):
         user_input (str): The user's input text
         callback_function (function): Function to handle Gemini's response
     """
-    model = configure_gemini()
-    
+
     # Create a system prompt that instructs Gemini on the available actions
     system_prompt = """
-    You are a productivity assistant that helps with focus sessions.
-    Based on user input, determine which of these actions to take:
-    1. Start a timer for X minutes (where X is a number mentioned by the user)
-    2. Start activity analysis (begin tracking what the user is doing)
-    3. End activity analysis (stop tracking and provide insights)
-    
-    Respond in JSON format with:
-    {"action": "timer", "minutes": X} OR
-    {"action": "start_analysis"} OR
-    {"action": "end_analysis"}
+    You are an intelligent assistant helping a user manage their study or work sessions.
+    Based on the user's input, determine the primary action they want to perform.
+    Output ONLY a JSON object with the determined action and any relevant parameters.
+
+    Possible "main_action" values are:
+    1. "start_session": If the user wants to start a new study/work session, begin tracking, or set a timer for a session.
+    - Include "timer_minutes": <integer> (optional, if a timer duration is specified).
+    - Include "session_goals": ["<goal1>", "<goal2>"] (optional, if goals are specified by the user).
+    2. "end_session": If the user wants to end the current session or stop tracking.
+    3. "during_session_interaction": If the user is asking a question, making a comment, or requesting something that happens *during* an active session (e.g., asking about their productivity, asking for a summary, a general question, or a RAG-type query).
+    - Include "user_query": "<the user's original question or statement for further processing>"
+    4. "general_command": For other direct commands not fitting above (e.g. "set a 5 minute timer" outside a session context).
+    - Include "command_details": "<details of the command>"
+    - Include "timer_minutes": <integer> (optional, if a timer duration is specified).
+
+    Responde with a JSON object like this:
+    {"action": "general_command"},
+    {"action": "start_session", "timer_minutes": 25}
+
+    If the user's intent is unclear or it's a simple conversational turn, use "during_session_interaction" and pass their full input as "user_query".
+
+    User input: "{user_text_input}"
+
+    JSON Output:
+
     """
     
     try:
-        response = model.generate_content([system_prompt, user_input])
-        process_gemini_response(response, callback_function)
+        response = gemini.generate_content([system_prompt, user_input])
+        callback_function(response.text)
     except Exception as e:
         callback_function(f"Error connecting to Gemini: {str(e)}")
 

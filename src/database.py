@@ -70,7 +70,12 @@ def add_summaries_to_db(summaries_data):
             embeddings=embeddings,
             documents=documents,
             ids=ids,
-            metadatas=metadatas # Aggiungi i metadati qui
+            metadatas= {
+                "timestamp_sessione": "2025-05-11T10:00:00Z",
+                "id_sessione_originale": "session_log_001",
+                "tipo_attivita_principale": "programmazione",
+                "punteggio_produttivita": 0.6
+            } # Aggiungi i metadati qui
         )
         print(f"Aggiunti {len(documents)} riassunti (con metadati) al database.")
     except Exception as e:

@@ -1,0 +1,35 @@
+2025-05-11 10:39:49,095 - INFO - Event: session_start - {'goals': ['Write UI for an app', 'Code on Vs Code']}
+2025-05-11 10:39:49,099 - INFO - Gemini productivity analysis thread started
+2025-05-11 10:39:49,099 - INFO - Session tracking started: Generic Session
+2025-05-11 10:39:49,915 - INFO - Event: app_change - {'from': None, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'duration_previous': 0}
+2025-05-11 10:39:59,675 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'to': {'title': 'python3 keyboard monitoring crash macos - Cerca con Google - Brave - Mattia', 'app': 'Brave Browser'}, 'duration_previous': 10.58}
+2025-05-11 10:40:10,189 - INFO - Event: idle_start - {'after_seconds': 10.51}
+2025-05-11 10:40:14,210 - INFO - Event: idle_end - {'duration_seconds': 4.02}
+2025-05-11 10:40:17,909 - INFO - Event: app_change - {'from': {'title': 'python3 keyboard monitoring crash macos - Cerca con Google - Brave - Mattia', 'app': 'Brave Browser'}, 'to': {'title': 'Your code is: Q2HXHP - mattsicoli23@gmail.com - Gmail - Brave - Mattia', 'app': 'Brave Browser'}, 'duration_previous': 18.23}
+2025-05-11 10:40:19,506 - INFO - Event: app_change - {'from': {'title': 'Your code is: Q2HXHP - mattsicoli23@gmail.com - Gmail - Brave - Mattia', 'app': 'Brave Browser'}, 'to': {'title': 'Posta in arrivo (229) - mattsicoli23@gmail.com - Gmail - Brave - Mattia', 'app': 'Brave Browser'}, 'duration_previous': 1.6}
+2025-05-11 10:40:19,680 - ERROR - Error calling Gemini API: module 'google.generativeai' has no attribute 'Client'
+2025-05-11 10:40:19,680 - INFO - Event: no_screenshot - {'reason': "API error: module 'google.generativeai' has no attribute 'Client'", 'current_app': 'Brave Browser', 'window_title': 'Posta in arrivo (229) - mattsicoli23@gmail.com - Gmail - Brave - Mattia'}
+2025-05-11 10:40:22,682 - INFO - Event: app_change - {'from': {'title': 'Posta in arrivo (229) - mattsicoli23@gmail.com - Gmail - Brave - Mattia', 'app': 'Brave Browser'}, 'to': {'title': 'You will be charged for your iCloud+ plan in 2 days - mattsicoli23@gmail.com - Gmail - Brave - Mattia', 'app': 'Brave Browser'}, 'duration_previous': 3.18}
+2025-05-11 10:40:24,456 - INFO - Event: app_change - {'from': {'title': 'You will be charged for your iCloud+ plan in 2 days - mattsicoli23@gmail.com - Gmail - Brave - Mattia', 'app': 'Brave Browser'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'duration_previous': 1.77}
+2025-05-11 10:40:25,265 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'to': {'title': 'You will be charged for your iCloud+ plan in 2 days - mattsicoli23@gmail.com - Gmail - Brave - Mattia', 'app': 'Brave Browser'}, 'duration_previous': 0.81}
+2025-05-11 10:40:30,152 - INFO - Event: app_change - {'from': {'title': 'You will be charged for your iCloud+ plan in 2 days - mattsicoli23@gmail.com - Gmail - Brave - Mattia', 'app': 'Brave Browser'}, 'to': {'title': 'Posta in arrivo (5) - mattia.sicoli@gmail.com - Gmail - Brave - Mattia', 'app': 'Brave Browser'}, 'duration_previous': 4.89}
+2025-05-11 10:40:34,098 - INFO - Event: app_change - {'from': {'title': 'Posta in arrivo (5) - mattia.sicoli@gmail.com - Gmail - Brave - Mattia', 'app': 'Brave Browser'}, 'to': {'title': 'Instagram - Brave - Mattia', 'app': 'Brave Browser'}, 'duration_previous': 3.95}
+2025-05-11 10:40:43,828 - INFO - Event: app_change - {'from': {'title': 'Instagram - Brave - Mattia', 'app': 'Brave Browser'}, 'to': {'title': 'Stories • Instagram - Brave - Mattia', 'app': 'Brave Browser'}, 'duration_previous': 9.73}
+2025-05-11 10:40:50,358 - ERROR - Error calling Gemini API: module 'google.generativeai' has no attribute 'Client'
+2025-05-11 10:40:50,358 - INFO - Event: no_screenshot - {'reason': "API error: module 'google.generativeai' has no attribute 'Client'", 'current_app': 'Brave Browser', 'window_title': 'Instagram - Brave - Mattia'}
+2025-05-11 10:40:50,542 - INFO - Event: app_change - {'from': {'title': 'Stories • Instagram - Brave - Mattia', 'app': 'Brave Browser'}, 'to': {'title': 'Instagram - Brave - Mattia', 'app': 'Brave Browser'}, 'duration_previous': 6.71}
+2025-05-11 10:40:52,214 - INFO - Event: app_change - {'from': {'title': 'Instagram - Brave - Mattia', 'app': 'Brave Browser'}, 'to': {'title': '\u200eWhatsApp', 'app': 'WhatsApp'}, 'duration_previous': 1.67}
+2025-05-11 10:40:53,830 - INFO - Event: app_change - {'from': {'title': '\u200eWhatsApp', 'app': 'WhatsApp'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'duration_previous': 1.62}
+2025-05-11 10:41:20,960 - ERROR - Error calling Gemini API: module 'google.generativeai' has no attribute 'Client'
+2025-05-11 10:41:20,961 - INFO - Event: no_screenshot - {'reason': "API error: module 'google.generativeai' has no attribute 'Client'", 'current_app': 'zed', 'window_title': 'GDG-Hackaton_2025 — activity_tracker.py'}
+2025-05-11 10:41:51,916 - ERROR - Error calling Gemini API: module 'google.generativeai' has no attribute 'Client'
+2025-05-11 10:41:51,916 - INFO - Event: no_screenshot - {'reason': "API error: module 'google.generativeai' has no attribute 'Client'", 'current_app': 'zed', 'window_title': 'GDG-Hackaton_2025 — activity_tracker.py'}
+2025-05-11 10:41:57,734 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'to': {'title': '\u2068Desktop\u2069 — Local', 'app': 'Finder'}, 'duration_previous': 63.9}
+2025-05-11 10:42:03,136 - INFO - Event: app_change - {'from': {'title': '\u2068Desktop\u2069 — Local', 'app': 'Finder'}, 'to': {'title': 'Copy', 'app': 'Finder'}, 'duration_previous': 5.4}
+2025-05-11 10:42:05,190 - INFO - Event: app_change - {'from': {'title': 'Copy', 'app': 'Finder'}, 'to': {'title': '\u2068Desktop\u2069 — Local', 'app': 'Finder'}, 'duration_previous': 2.05}
+2025-05-11 10:42:14,616 - INFO - Event: app_change - {'from': {'title': '\u2068Desktop\u2069 — Local', 'app': 'Finder'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'duration_previous': 9.43}
+2025-05-11 10:42:15,321 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'to': {'title': '\u2068Desktop\u2069 — Local', 'app': 'Finder'}, 'duration_previous': 0.71}
+2025-05-11 10:42:20,424 - INFO - Event: app_change - {'from': {'title': '\u2068Desktop\u2069 — Local', 'app': 'Finder'}, 'to': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'duration_previous': 5.1}
+2025-05-11 10:42:22,578 - ERROR - Error calling Gemini API: module 'google.generativeai' has no attribute 'Client'
+2025-05-11 10:42:22,578 - INFO - Event: no_screenshot - {'reason': "API error: module 'google.generativeai' has no attribute 'Client'", 'current_app': 'zed', 'window_title': 'GDG-Hackaton_2025 — activity_tracker.py'}
+2025-05-11 10:42:27,841 - INFO - Event: app_change - {'from': {'title': 'GDG-Hackaton_2025 — activity_tracker.py', 'app': 'zed'}, 'to': {'title': 'GDG-Hackaton_2025', 'app': 'zed'}, 'duration_previous': 7.42}
