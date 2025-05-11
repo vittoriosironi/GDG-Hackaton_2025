@@ -5,6 +5,7 @@ google-generativeai
 pyautogui
 pytesseract
 Pillow
+<<<<<<< Updated upstream
 pyaudio
 pydub
 speech_recognition
@@ -15,3 +16,8 @@ tk
 numpy
 pyaudio
 rumps
+=======
+chromadb
+sentence-transformers
+google-generativeai
+>>>>>>> Stashed changes

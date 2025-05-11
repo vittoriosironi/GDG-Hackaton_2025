@@ -69,10 +69,17 @@ class SessionTracker:
         logging.basicConfig(level=logging.INFO, 
             format='%(asctime)s - %(levelname)s - %(message)s',
                            filename=f"session_{self.start_time.strftime('%Y%m%d_%H%M%S')}.log")
+<<<<<<< Updated upstream
                 
         self.logger = logging.getLogger(__name__)
         
    
+=======
+
+        self.logger = logging.getLogger(__name__)
+        
+
+>>>>>>> Stashed changes
     def start_tracking(self):
         """Start all tracking mechanisms"""
         self.is_tracking = True
@@ -147,7 +154,7 @@ class SessionTracker:
         event = {
             "timestamp": datetime.now().isoformat(),
             "type": event_type,
-            "data": data or {}
+            "data": json.dumps(data) if data else json.dumps({}),
         }
         self.events.append(event)
         
@@ -270,7 +277,6 @@ class SessionTracker:
             self.typing_start_time = current_time
             self.logger.debug(f"Started new typing session (total sessions so far: {self.typing_sessions_count})")
 
-    
     def _on_key_release(self, key):
         """Handle key release events"""
         if not self.is_tracking:
