@@ -14,8 +14,8 @@ def start_session():
         return jsonify({"error": "Sessione già attiva"}), 400j
     session_active = True
     global session_tracker
-    
-    session_tracker = SessionTracker("Study work", ["mechanics", ])
+
+    session_tracker = SessionTracker("Study work", ["mechanics"])
     session_tracker.start_tracking()
     return jsonify({"status": "started"})
 
@@ -39,24 +39,36 @@ def receive_message():
     if not data or "content" not in data:
         return jsonify({"error": "Contenuto mancante"}), 400
     
-    print(f"Messaggio ricevuto: {data['content']}")
-    return jsonify({"status": "received"})
+    content = data['content']
+    print(f"Messaggio ricevuto: {content}")
+    
+    # Risposta generica o logica custom
+    risposta = f"Ho ricevuto il tuo messaggio"
+    
+    return jsonify({
+        "status": "received",
+        "response": risposta
+    })
 
-@app.post("/pull")
+@app.get("/pull")
 def pull_briefs():
-    """
-    Pulls the productivity briefs from the session tracker.
-    """
     global session_tracker
     global session_active
+
     if not session_active:
         return jsonify({"error": "Sessione non attiva"}), 403
-    
+
+    if session_tracker is None or not hasattr(session_tracker, "prodanalyzer"):
+        return jsonify({"error": "Tracker non inizializzato"}), 500
+
     briefs = session_tracker.prodanalyzer.briefs
+
     if not briefs:
         return jsonify({"error": "Nessun brief trovato"}), 404
-    
-    return jsonify(briefs)
+    else:
+        brief = briefs[-1]
+
+    return jsonify(brief)
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001)
