@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, abort
 from activity_tracker import SessionTracker 
+from enhanced_chat import rag_with_function_calling
 
 app = Flask(__name__)
 
@@ -43,8 +44,7 @@ def receive_message():
     content = data['content']
     print(f"Messaggio ricevuto: {content}")
     
-    # Risposta generica o logica custom
-    risposta = f"Ho ricevuto il tuo messaggio"
+    risposta = rag_with_function_calling(content)
     
     return jsonify({
         "status": "received",
@@ -70,4 +70,4 @@ def pull_briefs():
         return jsonify({"brief": ""})
     
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="127.0.0.1", port=5001)
