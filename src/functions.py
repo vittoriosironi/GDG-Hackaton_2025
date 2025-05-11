@@ -5,9 +5,14 @@ import google.generativeai as genai
 from datetime import datetime
 import json
 import re
-import gemini
 
 # Configure Gemini API
+def configure_gemini():
+    api_key = "AIzaSyC8K8ymeN6RTDmGsXVnKUGfEDQBSlMBp0I"
+    if not api_key:
+        raise ValueError("GOOGLE_API_KEY environment variable not found")
+    genai.configure(api_key=api_key)
+    return genai.GenerativeModel('gemini-2.0-flash')
 
 # Global variables
 activity_log = []
@@ -23,7 +28,8 @@ def process_user_input(user_input, callback_function):
         user_input (str): The user's input text
         callback_function (function): Function to handle Gemini's response
     """
-
+    model = configure_gemini()
+    
     # Create a system prompt that instructs Gemini on the available actions
     system_prompt = """
     You are an intelligent assistant helping a user manage their study or work sessions.
@@ -54,7 +60,7 @@ def process_user_input(user_input, callback_function):
     """
     
     try:
-        response = gemini.generate_content([system_prompt, user_input])
+        response = model.generate_content([system_prompt, user_input])
         callback_function(response.text)
     except Exception as e:
         callback_function(f"Error connecting to Gemini: {str(e)}")

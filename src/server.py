@@ -10,7 +10,7 @@ session_active = False
 def start_session():
     global session_active
     if session_active:
-        return jsonify({"error": "Sessione già attiva"}), 400
+        return jsonify({"error": "Sessione già attiva"}), 400j
     session_active = True
     SessionTracker.start_session()
     return jsonify({"status": "started"})

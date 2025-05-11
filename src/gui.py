@@ -13,7 +13,6 @@ from pydub import AudioSegment
 import speech_recognition as sr
 from gemini_rag import rag
 from activity_tracker import SessionTracker
-import gemini 
 
 import rumps
 MENU_BAR_AVAILABLE = True
@@ -503,7 +502,6 @@ class BubbleCanvas(tk.Frame):
 # Modify GUI class to support menu bar
 class GUI:
     def __init__(self, title="StudyWiz", width=500, height=600):
-        gemini.init()
         # Definisci i colori qui per evitare variabili globali
         self.SENT_BG = "#0078FF"
         self.RECEIVED_BG = "#E5E5EA"
@@ -587,6 +585,10 @@ class GUI:
                            fg=self.ACCENT_COLOR, bg="#FFFFFF")
         logo_label.pack(side=tk.LEFT, padx=15, pady=10)
         
+        # Sottotitolo
+        subtitle_label = tk.Label(header_frame, text="25:09", 
+                               font=("Arial", 15), fg="#888888", bg="#FFFFFF")
+        subtitle_label.pack(side=tk.RIGHT, padx=25, pady=15)
         
         # Area messaggi (scrollable con bolle)
         self.message_area = BubbleCanvas(main_frame)
@@ -595,11 +597,6 @@ class GUI:
         # Frame per l'area di input del messaggio
         input_frame = tk.Frame(main_frame, bg="#e0e0e0")
         input_frame.pack(fill=tk.X, side=tk.BOTTOM, padx=10, pady=10)
-        
-        # Timer label - initially empty
-        self.timer_label = tk.Label(header_frame, text="", 
-                                font=("Arial", 15), fg="#888888", bg="#FFFFFF")
-        self.timer_label.pack(side=tk.RIGHT, padx=25, pady=15)
         
         # Campo di input per il messaggio con bordi arrotondati
         self.message_input = RoundedEntry(input_frame, width=350, height=40, 
@@ -923,7 +920,6 @@ class GUI:
                                 self.post_message("I've started tracking your activity. I'll keep an eye on how you're spending your time and provide insights when you're ready!")
                                 
                                 self.session_tracker.start_tracking()
-                                print("Session started")
                                 minutes = response_data.get('timer_minutes')
                                 if minutes is not None:
                                     try:
@@ -938,14 +934,9 @@ class GUI:
                                 
                             elif action == 'end_session':
                                 self.post_message("I've stopped tracking your activity. You can check the insights in the log files.")
-                                self.session_tracker.stop_tracking()
+                                self.session_tracker.end_tracking()
                                 self.session_tracker.prodanalyzer.save_to_db()
                             elif action == 'during_session_interaction':
-                                response_data = response_data.get('response')
-                                message = rag(response_data)
-                                self.post_message(message)
-                                return # Azione gestita
-                            elif action == 'general_command':
                                 response_data = response_data.get('response')
                                 message = rag(response_data)
                                 self.post_message(message)
@@ -1007,69 +998,6 @@ class GUI:
                 is_sent=False
             )
     
-    def start_timer(self, minutes):
-        """
-        Start a timer for the specified number of minutes
-        
-        Args:
-            minutes (int): Timer duration in minutes
-        """
-        print(f"DEBUG: start_timer called with {minutes} minutes")
-        # Cancel existing timer if running
-        self.cancel_timer()
-        
-        # Set up new timer
-        self.timer_active = True
-        self.timer_end_time = time.time() + (minutes * 60)
-        
-        # Start the update timer in the GUI thread
-        self._update_timer()
-        
-    def cancel_timer(self):
-        """Cancel the currently running timer"""
-        print("DEBUG: cancel_timer called")
-        self.timer_active = False
-        self.timer_end_time = None
-        
-        # Clear the timer display
-        if self.root and hasattr(self, 'timer_label'):
-            print("DEBUG: clearing timer label")
-            self.root.after(0, lambda: self.timer_label.config(text=""))
-            
-    def _update_timer(self):
-        """Update the timer label with the remaining time"""
-        if not self.timer_active or not self.timer_end_time or not self.root:
-            print("DEBUG: _update_timer called but conditions not met")
-            return
-            
-        # Calculate remaining time
-        remaining_seconds = max(0, self.timer_end_time - time.time())
-        
-        if remaining_seconds <= 0:
-            # Timer has finished
-            print("DEBUG: Timer finished")
-            self.timer_active = False
-            self.timer_end_time = None
-            self.timer_label.config(text="")
-            self.post_message("Your timer has finished!", is_sent=False)
-            
-            # Handle stop tracking
-            self.session_tracker.stop_tracking()
-            
-            self.session_tracker.prodanalyzer.save_to_db()
-            
-            return
-            
-        # Format minutes:seconds
-        minutes = int(remaining_seconds // 60)
-        seconds = int(remaining_seconds % 60)
-        time_str = f"{minutes:02d}:{seconds:02d}"
-        
-        # Update the label in the GUI thread
-        self.timer_label.config(text=time_str)
-        
-        # Schedule the next update in 1 second
-        self.root.after(1000, self._update_timer)
     
     
 # Solo per test - questo codice viene eseguito solo se gui.py è eseguito direttamente

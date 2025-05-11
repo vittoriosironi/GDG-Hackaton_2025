@@ -4,7 +4,14 @@ from pydantic import BaseModel, Field
 import json
 from PIL import Image
 import logging
+<<<<<<< Updated upstream
 import time
+=======
+from time import time
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 from database import add_summaries_to_db
 
 # Configure logging
@@ -112,7 +119,15 @@ class ProductivityAnalysis:
         """
         Save the analysis to the database.
         """
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
         timestamp = time.strftime("%Y%m%d-%H%M%S")
+=======
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+>>>>>>> Stashed changes
+=======
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+>>>>>>> Stashed changes
 
         summary = {
             "id": timestamp,
@@ -132,6 +147,26 @@ class ProductivityAnalysis:
             "response_schema": str
         })
         summary['summary_text'] = summary_response
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+
+        # Save the summary to the database
+        add_summaries_to_db(
+            summaries_data=[summary]
+        )
+
+
+>>>>>>> Stashed changes
+
+        # Save the summary to the database
+        add_summaries_to_db(
+            summaries_data=[summary]
+        )
+
+
+>>>>>>> Stashed changes
 
         # Save the summary to the database
         add_summaries_to_db(
