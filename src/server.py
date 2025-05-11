@@ -14,8 +14,9 @@ def start_session():
         return jsonify({"error": "Sessione già attiva"}), 400j
     session_active = True
     global session_tracker
+    
+    session_tracker = SessionTracker("Study work", ["study mechanics", "see more physics videos"])
 
-    session_tracker = SessionTracker("Study work", ["mechanics"])
     session_tracker.start_tracking()
     return jsonify({"status": "started"})
 
@@ -62,13 +63,11 @@ def pull_briefs():
         return jsonify({"error": "Tracker non inizializzato"}), 500
 
     briefs = session_tracker.prodanalyzer.briefs
-
-    if not briefs:
-        return jsonify({"error": "Nessun brief trovato"}), 404
+    
+    if len(briefs) > 0:
+        return jsonify({"brief": briefs[-1]})
     else:
-        brief = briefs[-1]
-
-    return jsonify(brief)
+        return jsonify({"brief": ""})
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001)
