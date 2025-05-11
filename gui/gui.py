@@ -955,7 +955,7 @@ class GUI:
         self.message_area.remove_last_bubble()
         
         # Post the actual response
-        self.post_message(response_text, is_sent=False)
+        #self.post_message(response_text, is_sent=False)
     
     def run_automation(self, goal_text):
         """
