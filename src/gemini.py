@@ -9,6 +9,10 @@ def init():
     Initialize the Gemini module.
     """
     global model
+    
+    if model is not None:
+        return
+    
     # Configure Gemini
     GOOGLE_API_KEY = "AIzaSyDkWDYv3lmKfngo_zN1G8WYxDB3_571dN4"
     try:

@@ -9,24 +9,12 @@ import threading
 import re
 import logging
 import os
-import google.generativeai as genai
+import gemini
 from PIL import Image
 from io import BytesIO
 import base64
 import pyscreenshot as ImageGrab
 import productivity_analyzer as prodanalyzer
-import macos_timer
-
-# Configure Gemini
-GOOGLE_API_KEY = "AIzaSyC8K8ymeN6RTDmGsXVnKUGfEDQBSlMBp0I"
-try:
-    genai.configure(api_key=GOOGLE_API_KEY)
-    MODEL_NAME = "gemini-2.0-flash-lite"
-    model = genai.GenerativeModel(MODEL_NAME)
-except Exception as e:
-    print(f"Warning: Failed to initialize Gemini API: {str(e)}")
-    model = None
-
 
 class SessionTracker:
     def __init__(self, session_name, user_goals=None):
@@ -62,7 +50,6 @@ class SessionTracker:
         
         # Screenshot and Gemini analysis variables
         self.screenshot_directory = os.path.expanduser("./screenshots")
-        self.gemini_api_key = os.environ.get("GEMINI_API_KEY", "AIzaSyBdrRulBoZvc8bNkpebKcgtBizha0mp69k")  # Get API key from environment
         self.gemini_analysis_interval = 30  # Check every 1 minute
         self.screenshot_count = 0
         self.recent_activity = []  # Store recent activities for analysis
@@ -82,6 +69,7 @@ class SessionTracker:
         
     def start_tracking(self):
         """Start all tracking mechanisms"""
+        gemini.init()
         self.is_tracking = True
         self.previous_analysis = []
         print("Starting session tracking...")
@@ -109,17 +97,13 @@ class SessionTracker:
         typing_thread.start()
         self.tracking_threads.append(typing_thread)
         
-        #Start Gemini analysis thread
-        if self.gemini_api_key:
-            # Create screenshots directory if it doesn't exist
-            os.makedirs(self.screenshot_directory, exist_ok=True)
-            gemini_thread = threading.Thread(target=self._gemini_productivity_analysis)
-            gemini_thread.daemon = True
-            gemini_thread.start()
-            self.tracking_threads.append(gemini_thread)
-            self.logger.info("Gemini productivity analysis thread started")
-        else:
-            self.logger.warning("GEMINI_API_KEY not set, screenshot analysis disabled")
+        # Create screenshots directory if it doesn't exist
+        os.makedirs(self.screenshot_directory, exist_ok=True)
+        gemini_thread = threading.Thread(target=self._gemini_productivity_analysis)
+        gemini_thread.daemon = True
+        gemini_thread.start()
+        self.tracking_threads.append(gemini_thread)
+        self.logger.info("Gemini productivity analysis thread started")
         
         # Start periodic summary thread
         summary_thread = threading.Thread(target=self._periodic_summarization)
@@ -472,7 +456,7 @@ class SessionTracker:
         """Analyze the workflow and suggest improvements"""
         # This is a placeholder for future implementation
         
-        #self.previous_analysis = []
+        self.previous_analysis = []
         
         while self.is_tracking:
             
@@ -482,13 +466,7 @@ class SessionTracker:
                 
                 self.last_events = []
 
-                if suggestion != None:
-                    macos_timer.show_notification(
-                        title="Workflow Analysis Suggestion",
-                        message=suggestion,
-                        sound=True
-                    )
-            
+                
             time.sleep(1)
     
     def _gemini_productivity_analysis(self):
@@ -582,8 +560,7 @@ class SessionTracker:
             REASON: [brief explanation]
             """
            
-            client = genai.Client(api_key=self.gemini_api_key)
-            
+      
             data = [prompt]
             
             # if self.last_screenshot != None:
@@ -592,11 +569,9 @@ class SessionTracker:
             #     )
                 
             
-            response = client.models.generate_content(
-                model="gemini-2.0-flash", contents=prompt
-            )
+            response = gemini.query(prompt)
             
-            result = response.text
+            result = response
             
             # Parse the response
             capture_line = next((line for line in result.split('\n') if line.startswith('CAPTURE_SCREENSHOT:')), '')
