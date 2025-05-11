@@ -1,3 +1,6 @@
 .venv
 .ropeproject
 .temp_audio
+screenshots
+__pycache__
+*.wav

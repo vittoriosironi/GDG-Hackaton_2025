@@ -8,4 +8,10 @@ Pillow
 pyaudio
 pydub
 speech_recognition
+google-genai
+pyscreenshot
+Pillow
+tk
+numpy
+pyaudio
 rumps

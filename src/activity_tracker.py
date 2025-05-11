@@ -8,8 +8,12 @@ from pynput import mouse, keyboard
 import threading
 import re
 import logging
-import google.generativeai as genai
-from google.generativeai import types
+import os
+from google import genai
+from PIL import Image
+from io import BytesIO
+import base64
+import pyscreenshot as ImageGrab
 
 # Configure Gemini
 GOOGLE_API_KEY = "AIzaSyC8K8ymeN6RTDmGsXVnKUGfEDQBSlMBp0I"
@@ -20,6 +24,7 @@ try:
 except Exception as e:
     print(f"Warning: Failed to initialize Gemini API: {str(e)}")
     model = None
+
 
 class SessionTracker:
     def __init__(self, session_name, user_goals=None):
@@ -40,6 +45,11 @@ class SessionTracker:
         self.summarization_interval = 5 * 60  # seconds
         self.tracking_threads = []
         
+        self.last_screenshot = {
+            "path": None,
+            "reason": None
+        }
+        
         # Typing tracking variables
         self.typing_start_time = None
         self.typing_active = False
@@ -48,115 +58,27 @@ class SessionTracker:
         self.total_typing_time = 0  # Total cumulative typing time in seconds
         self.typing_sessions_count = 0  # Count of typing sessions
         
+        # Screenshot and Gemini analysis variables
+        self.screenshot_directory = os.path.expanduser("./screenshots")
+        self.gemini_api_key = os.environ.get("GEMINI_API_KEY", "AIzaSyBdrRulBoZvc8bNkpebKcgtBizha0mp69k")  # Get API key from environment
+        self.gemini_analysis_interval = 30  # Check every 1 minute
+        self.screenshot_count = 0
+        self.recent_activity = []  # Store recent activities for analysis
+        
         # Configure logging
         logging.basicConfig(level=logging.INFO, 
             format='%(asctime)s - %(levelname)s - %(message)s',
                            filename=f"session_{self.start_time.strftime('%Y%m%d_%H%M%S')}.log")
-        
-        # Configure Gemini logger
-        gemini_log_file = f"gemini_{self.start_time.strftime('%Y%m%d_%H%M%S')}.log"
-        gemini_handler = logging.FileHandler(gemini_log_file)
-        gemini_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
-        self.gemini_logger = logging.getLogger('gemini_logger')
-        self.gemini_logger.setLevel(logging.INFO)
-        self.gemini_logger.addHandler(gemini_handler)
-        
+                
         self.logger = logging.getLogger(__name__)
         
-    def analyze_focus(self):
-        """Analyze the last 5 minutes of logs to determine focus"""
-        while self.is_tracking:
-            try:
-                self.logger.info("Starting focus analysis...")
-                # Get current time and calculate 5 minutes ago
-                current_time = datetime.now()
-                five_minutes_ago = current_time - timedelta(minutes=5)
-                
-                # Filter logs from the last 5 minutes
-                recent_logs = []
-                with open(f"session_{self.start_time.strftime('%Y%m%d_%H%M%S')}.log", 'r') as f:
-                    for line in f:
-                        # Parse timestamp from log line
-                        try:
-                            timestamp_str = line.split(' - ')[0]
-                            log_time = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S,%f')
-                            if log_time >= five_minutes_ago:
-                                recent_logs.append(line)
-                        except Exception as e:
-                            continue
-                
-                # Prepare data for Gemini analysis
-                recent_logs_str = "\n".join(recent_logs)
-                prompt = f"""Analyze the user's focus based on the following activity logs:
-                User goals: {self.user_goals}
-                Recent activity (last 5 minutes):
-                {recent_logs_str}
-                
-                Please provide:
-                1. A focus score between 0 and 1 (where 1 is fully focused)
-                2. A brief explanation of the focus level
-                3. Any recommendations for improvement
-
-                Return the result in JSON format: {{"focus_score": X, "explanation": "...", "recommendations": ["..."]}}
-                """
-                
-                # Use Gemini API for analysis
-                if model is None:
-                    self.logger.error("Gemini API not initialized")
-                    return
-                    
-                try:
-                    response = model.generate_content(prompt)
-                    
-                    # Extract JSON from response
-                    response_text = response.text
-                    json_start = response_text.find('{')
-                    json_end = response_text.rfind('}') + 1
-                    focus_analysis = json.loads(response_text[json_start:json_end])
-                    
-                    # Log Gemini response
-                    self.gemini_logger.info(f"Gemini response: {response_text}")
-                    
-                except Exception as e:
-                    self.logger.error(f"Error with Gemini API: {str(e)}")
-                    self.logger.error(f"Response text: {response_text if 'response' in locals() else 'No response'}")
-                    self.gemini_logger.error(f"Error with Gemini API: {str(e)}")
-                    self.gemini_logger.error(f"Response text: {response_text if 'response' in locals() else 'No response'}")
-                    raise
-                try:    
-                # Log the focus analysis
-                    self.log_event("focus_analysis", {
-                        "focus_score": focus_analysis["focus_score"],
-                        "explanation": focus_analysis["explanation"],
-                        "recommendations": focus_analysis["recommendations"],
-                        "timestamp": current_time.isoformat()
-                    })
-                    self.logger.info(f"Focus analysis completed. Score: {focus_analysis['focus_score']}")
-                    
-                except Exception as e:
-                    self.logger.error(f"Error processing Gemini response: {str(e)}")
-                    self.log_event("focus_analysis", {
-                        "error": str(e),
-                        "timestamp": current_time.isoformat()
-                    })
-                
-                # Wait for 5 minutes before next analysis
-                time.sleep(60)
-                
-            except Exception as e:
-                self.logger.error(f"Error in focus analysis: {str(e)}")
-                time.sleep(60)  # Wait a minute before retrying
-
+   
     def start_tracking(self):
         """Start all tracking mechanisms"""
         self.is_tracking = True
         self.log_event("session_start", {"goals": self.user_goals}, track_idle=False)
         
-        # Start focus analysis thread
-        focus_thread = threading.Thread(target=self.analyze_focus, daemon=True)
-        focus_thread.start()
-        self.tracking_threads.append(focus_thread)
-        
+    
         # Start window tracking thread
         window_thread = threading.Thread(target=self._track_active_windows)
         window_thread.daemon = True
@@ -177,6 +99,18 @@ class SessionTracker:
         typing_thread.daemon = True
         typing_thread.start()
         self.tracking_threads.append(typing_thread)
+        
+        # Start Gemini analysis thread
+        if self.gemini_api_key:
+            # Create screenshots directory if it doesn't exist
+            os.makedirs(self.screenshot_directory, exist_ok=True)
+            gemini_thread = threading.Thread(target=self._gemini_productivity_analysis)
+            gemini_thread.daemon = True
+            gemini_thread.start()
+            self.tracking_threads.append(gemini_thread)
+            self.logger.info("Gemini productivity analysis thread started")
+        else:
+            self.logger.warning("GEMINI_API_KEY not set, screenshot analysis disabled")
         
         # # Start periodic summary thread
         summary_thread = threading.Thread(target=self._periodic_summarization)
@@ -216,9 +150,18 @@ class SessionTracker:
             "data": data or {}
         }
         self.events.append(event)
+        
+        # Add to recent activity for Gemini analysis
+        self.recent_activity.append(event)
+        # Keep only last 2 minutes of activity
+        now = time.time()
+        self.recent_activity = [e for e in self.recent_activity 
+                               if (now - datetime.fromisoformat(e["timestamp"]).timestamp()) < 120]
+        
         if track_idle:
             self.last_activity_time = time.time()
         
+        # Log significant events
         self.logger.info(f"Event: {event_type} - {data}")
     
     def add_manual_checkpoint(self, description):
@@ -239,6 +182,7 @@ class SessionTracker:
                 if active_window:
                     # Get window title safely
                     try:
+                        
                         current_window = {
                             "title": active_window.title,
                             "app": active_window.getAppName(),
@@ -259,8 +203,9 @@ class SessionTracker:
                         })
                     
                     # If window changed
-                    if last_active_window["title"] != current_window["title"] or \
-                          last_active_window["app"] != current_window["app"]:
+                    if (last_active_window["title"] != current_window["title"] or \
+                        last_active_window["app"] != current_window["app"]) and \
+                          current_window["title"] != "" and last_active_window != '':
                         now = time.time()
                         
                         # Log previous window duration if it exists
@@ -291,7 +236,7 @@ class SessionTracker:
                 self.logger.error(f"Error tracking windows: {e}")
                 # Continue tracking even after an error
                 
-            time.sleep(1)
+            time.sleep(0.2)
     
     def _setup_input_listeners(self):
         """Setup keyboard and mouse event listeners"""
@@ -342,8 +287,7 @@ class SessionTracker:
             return
             
         self.interaction_count += 1
-        
-        self.log_event("user_input", {"type": "mouse_click"})
+        self.last_activity_time = time.time()
         
     def _on_mouse_move(self, x, y):
         """Handle mouse move events"""
@@ -353,7 +297,6 @@ class SessionTracker:
         self.interaction_count += 1
         self.last_activity_time = time.time()
         
-    
     def _on_mouse_scroll(self, x, y, dx, dy):
         """Handle mouse scroll events"""
         if not self.is_tracking:
@@ -475,7 +418,7 @@ class SessionTracker:
                 if time_since_last_keystroke > self.typing_timeout:
                     self._end_typing_session()
                 
-            time.sleep(0.5)  # Check more frequently than other monitors
+            time.sleep(0.3)  # Check more frequently than other monitors
     
     def _end_typing_session(self):
         """End the current typing session and log the duration"""
@@ -511,6 +454,143 @@ class SessionTracker:
         self.typing_active = False
         self.typing_start_time = None
         # We don't reset interaction_count because it's a session-wide metric
+    
+    def _gemini_productivity_analysis(self):
+        """Thread that periodically asks Gemini AI if it's worth taking a screenshot"""
+        while self.is_tracking:
+            try:
+                # Wait for the specified interval
+                time.sleep(self.gemini_analysis_interval)
+                
+                # Skip if no activity in the last 2 minutes
+                if not self.recent_activity:
+                    continue
+                
+                # Get the current active window for context
+                try:
+                    active_window = pwc.getActiveWindow()
+                    current_app = active_window.getAppName() if active_window else "Unknown"
+                    current_title = active_window.title if active_window else "Unknown"
+                except Exception as e:
+                    current_app = "Unknown"
+                    current_title = "Unknown"
+                    self.logger.error(f"Error getting window for Gemini analysis: {str(e)}")
+                
+                # Prepare context for Gemini
+                context = {
+                    "recent_events": self.recent_activity[-10:],  # Last 10 events
+                    "current_application": current_app,
+                    "window_title": current_title,
+                    "productivity_assessment_request": "Should I capture a screenshot of this moment for productivity analysis?"
+                }
+                
+                # Call Gemini API
+                should_screenshot, reason = self._ask_gemini(context)
+                
+                if should_screenshot:
+                    screenshot_path = self._capture_screenshot()
+                    self.last_screenshot = {
+                        "path": screenshot_path,
+                        "reason": reason
+                    }
+                    
+                    self.log_event("productivity_screenshot", {
+                        "path": screenshot_path,
+                        "reason": reason,
+                        "current_app": current_app,
+                        "window_title": current_title
+                    })
+                    #self.logger.info(f"Productivity screenshot captured: {screenshot_path} - Reason: {reason}")
+                else:
+                    self.log_event("no_screenshot", {
+                        "reason": reason,
+                        "current_app": current_app,
+                        "window_title": current_title
+                    })
+            except Exception as e:
+                self.logger.error(f"Error in Gemini productivity analysis: {str(e)}")
+                self.log_event("no_screenshot", {
+                    "reason": "Error in Gemini analysis"
+                })
+                # Wait a bit to avoid spamming logs in case of consistent errors
+                time.sleep(30)
+    
+    def _ask_gemini(self, context):
+        """Send a request to Gemini API to analyze productivity context"""
+        try:
+            prev_screen_shot_reason = self.last_screenshot["reason"] if self.last_screenshot != None else "No previous screenshot"
+            
+            # Format the prompt for Gemini
+            prompt = f"""
+            As a productivity assistant, analyze this work context and determine if this 
+            is a good moment to capture a screenshot for later productivity review.
+            
+            Current time: {datetime.now().isoformat()}
+            
+            Goal was: {self.user_goals}
+            
+            Current application: {context['current_application']}
+            Window title: {context['window_title']}
+            
+            Recent events: {json.dumps(context['recent_events'][-5:], indent=2)}
+            
+            Previous screenshot reason: {prev_screen_shot_reason}
+            Decision criteria:
+            - You should both capture moments of high productivity and moments of low productivity with distractions
+            - Consider the current application and window title
+            - The goal is to help the user reflect on their productivity patterns and improve their workflow considering the goal
+            
+
+            Respond in this format:
+            CAPTURE_SCREENSHOT: [YES/NO]
+            REASON: [brief explanation]
+            """
+           
+            client = genai.Client(api_key=self.gemini_api_key)
+            
+            data = [prompt]
+            
+            # if self.last_screenshot != None:
+            #     data.append(
+            #         Image.open(self.last_screenshot["path"])
+            #     )
+                
+            
+            response = client.models.generate_content(
+                model="gemini-2.0-flash", contents=prompt
+            )
+            
+            result = response.text
+            
+            # Parse the response
+            capture_line = next((line for line in result.split('\n') if line.startswith('CAPTURE_SCREENSHOT:')), '')
+            reason_line = next((line for line in result.split('\n') if line.startswith('REASON:')), '')
+            
+            should_capture = 'YES' in capture_line.upper()
+            reason = reason_line.replace('REASON:', '').strip() if reason_line else "No reason provided"
+            
+            
+            return should_capture, reason
+            
+        except Exception as e:
+            self.logger.error(f"Error calling Gemini API: {e}")
+            return False, f"API error: {str(e)}"
+    
+    def _capture_screenshot(self):
+        try:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            self.screenshot_count += 1
+            filename = f"productivity_{timestamp}_{self.screenshot_count}.png"
+            filepath = os.path.join(self.screenshot_directory, filename)
+            
+            # Using macOS screencapture command
+            im = ImageGrab.grab()
+            im.save(filepath)
+            
+            return filepath
+        except Exception as e:
+            self.logger.error(f"Error capturing screenshot: {str(e)}")
+            return None
    
 # Example usage
 if __name__ == "__main__":
