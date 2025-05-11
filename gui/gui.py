@@ -8,13 +8,15 @@ import wave
 import numpy as np
 import time
 import sys
+from pydub import AudioSegment
+import speech_recognition as sr
 
 import rumps
 MENU_BAR_AVAILABLE = True
 
 # Fix the import by adding the parent directory to sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from operator_gemini import call_gemini_api
+import functions
 AUTOMATION_AVAILABLE = True
 
 
@@ -523,8 +525,16 @@ class GUI:
         # Menu bar app
         self.menu_bar_app = None
         self.menu_bar_thread = None
+        
+        # Initialize Gemini API (will be used when the GUI starts)
+        self.model = None
     
     def setup_ui(self):
+            # Initialize Gemini
+        try:
+            self.model = functions.configure_gemini()
+        except Exception as e:
+            print(f"Error initializing Gemini API: {e}")
         # Creazione della finestra principale
         self.root = tk.Tk()
         self.root.title(self.title)
@@ -720,61 +730,90 @@ class GUI:
 
     def _process_audio_for_gemini(self, audio_file):
         """
-        Processa il file audio per l'invio a Gemini.
+        Process audio file for Gemini.
         
-        1. Converte l'audio in testo usando speech_recognition
-        2. Invia il testo riconosciuto a Gemini per l'automazione
+        1. Convert audio to text using speech recognition
+        2. Send recognized text to functions.py for Gemini processing
         
         Args:
-            audio_file (str): Percorso al file audio da elaborare
+            audio_file (str): Path to audio file
         """
         recognized_text = None
         
-        # Prova a convertire l'audio in testo
+        # Try to convert audio to text
         try:
-            # Usa pydub per convertire in formato compatibile se necessario
             from pydub import AudioSegment
             import speech_recognition as sr
             
-            # Converti da WAV a formato compatibile con speech_recognition
+            # Convert from WAV to optimized format
             sound = AudioSegment.from_wav(audio_file)
             
-            # Salva in formato ottimizzato per SpeechRecognition
+            # Save in format optimized for SpeechRecognition
             converted_file = audio_file.replace(".wav", "_converted.wav")
             sound.export(converted_file, format="wav")
             
-            # Riconosci il testo dall'audio
+            # Recognize text from audio
             recognizer = sr.Recognizer()
             with sr.AudioFile(converted_file) as source:
+                # Adjust for ambient noise to improve recognition
+                recognizer.adjust_for_ambient_noise(source)
                 audio_data = recognizer.record(source)
-                recognized_text = recognizer.recognize_google(audio_data, language="it-IT")
                 
-            # Rimuovi il file temporaneo
-            os.remove(converted_file)
+                try:
+                    # Try using Google's speech recognition
+                    recognized_text = recognizer.recognize_google(audio_data, language="en-US")
+                except sr.UnknownValueError:
+                    # Speech was unintelligible
+                    self.post_message("I couldn't understand what you said. Please try speaking more clearly.", is_sent=False)
+                except sr.RequestError as e:
+                    # API was unreachable or unresponsive
+                    self.post_message(f"Google Speech Recognition service error: {e}", is_sent=False)
             
-        except ImportError:
-            # Librerie mancanti
-            self.post_message("⚠️ Librerie per il riconoscimento vocale non disponibili. Installa speech_recognition e pydub.", is_sent=False)
-            recognized_text = "apri il browser"  # Testo di fallback
+            # Clean up files regardless of success/failure
+            try:
+                # Remove temporary file
+                if os.path.exists(converted_file):
+                    os.remove(converted_file)
+                
+                # Also remove original audio file to save space
+                if os.path.exists(audio_file):
+                    os.remove(audio_file)
+            except Exception as e:
+                print(f"Error removing temporary files: {e}")
+                
+        except ImportError as e:
+            self.post_message(f"⚠️ Required libraries not available: {e}", is_sent=False)
+            return
         except Exception as e:
-            # Altri errori
-            print(f"Errore nel riconoscimento vocale: {e}")
-            recognized_text = "apri il browser"  # Testo di fallback
+            self.post_message(f"⚠️ Error processing audio: {str(e)}", is_sent=False)
+            print(f"Audio processing error: {e}")
+            return
         
-        # Mostra il testo riconosciuto
+        # Show recognized text and process with Gemini if recognition was successful
         if recognized_text:
-            self.post_message(f"📝 Ho trascritto: \"{recognized_text}\"", is_sent=False)
+            self.post_message(f"📝 I transcribed: \"{recognized_text}\"", is_sent=False)
             
-            # Breve pausa prima di inviare a Gemini
+            # Short pause before sending to Gemini
             time.sleep(1)
             
-            # Invia il testo riconosciuto a Gemini
-            if AUTOMATION_AVAILABLE:
-                self.run_automation(recognized_text)
-            else:
-                self.post_message("⚠️ L'automazione non è disponibile. Verifica l'installazione di operator_gemini.", is_sent=False)
+            # Process the recognized text using functions.py
+            try:
+                # Show a "thinking" message
+                self.message_area.add_bubble(
+                    "Processing your request...",
+                    datetime.datetime.now().strftime("%H:%M"),
+                    is_sent=False
+                )
+                
+                # Process the user input using functions.py
+                functions.process_user_input(recognized_text, self.handle_gemini_response)
+                
+            except Exception as e:
+                self.message_area.remove_last_bubble()
+                self.post_message(f"Error processing your request: {str(e)}", is_sent=False)
+                print(f"Gemini processing error: {e}")
         else:
-            self.post_message("❌ Non sono riuscito a comprendere l'audio. Puoi riprovare o digitare il tuo messaggio?", is_sent=False)
+            self.post_message("❌ I couldn't understand the audio. Please try again or type your message.", is_sent=False)
     
     def _send_message(self, event=None):
         message = self.message_input.get()
@@ -849,31 +888,44 @@ class GUI:
         # Usa after per aggiungere il messaggio in modo thread-safe
         self.root.after(0, lambda: self.message_area.add_bubble(message, timestamp, is_sent=is_sent))
         return True
+    # Add this new method to your GUI class:
+
+    def handle_gemini_response(self, response_text):
+        """
+        Callback function for Gemini responses
+        
+        Args:
+            response_text (str): The response from Gemini
+        """
+        # Remove the "thinking" message (assuming it's the last bubble)
+        self.message_area.remove_last_bubble()
+        
+        # Post the actual response
+        self.post_message(response_text, is_sent=False)
     
     def run_automation(self, goal_text):
         """
-        Avvia un'automazione GUI basata su Gemini
+        Process user input using functions.py to interact with Gemini
         
         Args:
-            goal_text (str): L'obiettivo dell'automazione
+            goal_text (str): The user's input to process
         """
-        if not AUTOMATION_AVAILABLE:
+        # Show a "thinking" message
+        self.message_area.add_bubble(
+            "Elaborazione in corso...",
+            datetime.datetime.now().strftime("%H:%M"),
+            is_sent=False
+        )
+        
+        try:
+            # Process the user input using functions.py
+            functions.process_user_input(goal_text, self.handle_gemini_response)
+        except Exception as e:
             self.message_area.add_bubble(
-                "Automazione GUI non disponibile. Verifica l'installazione di operator_gemini.",
+                f"Errore durante l'elaborazione: {str(e)}",
                 datetime.datetime.now().strftime("%H:%M"),
                 is_sent=False
             )
-            return
-        
-        # Aggiungi un messaggio all'interfaccia
-        self.message_area.add_bubble(
-            f"Avvio automazione: '{goal_text}'", 
-            datetime.datetime.now().strftime("%H:%M"),
-            is_sent=True
-        )
-        
-        # Avvia l'automazione passando la classe GUI per la comunicazione
-        self.automation_thread = call_gemini_api(goal_text, app=self)
     
     
     

@@ -312,15 +312,26 @@ def find_element_by_text(elements, target_text, exact_match_threshold=90):
 def execute_action(action_string, current_elements):
     print(f"--- ESECUZIONE AZIONE: {action_string} ---")
     
+    # Get screen size for coordinate validation
+    screen_width, screen_height = pyautogui.size()
+    
     # CLICK_ID(id_elemento)
     match = re.fullmatch(r"CLICK_ID\(\s*(\d+)\s*\)", action_string, re.IGNORECASE)
     if match:
         el_id = int(match.group(1))
         element = find_element_by_id(current_elements, el_id)
         if element:
-            print(f"  PYAUTOGUI: CLICK_ID su ID {el_id} ('{element['text']}') @ ({element['x']},{element['y']})")
+            # Make sure coordinates are within screen bounds
+            x = min(max(0, element['x']), screen_width)
+            y = min(max(0, element['y']), screen_height)
+            
+            print(f"  PYAUTOGUI: CLICK_ID su ID {el_id} ('{element['text']}') @ ({x},{y})")
             time.sleep(0.2) # Piccola pausa prima del click
-            pyautogui.click(element['x'], element['y'])
+            
+            # Move first, then click separately - more reliable than direct click
+            pyautogui.moveTo(x, y, duration=0.2)
+            time.sleep(0.1)
+            pyautogui.click()
             return True, None
         else:
             msg = f"Elemento con ID {el_id} non trovato."
@@ -333,9 +344,17 @@ def execute_action(action_string, current_elements):
         text_to_click = match.group(1)
         element = find_element_by_text(current_elements, text_to_click)
         if element:
-            print(f"  PYAUTOGUI: CLICK_TEXT su \"{text_to_click}\" (trovato '{element['text']}') @ ({element['x']},{element['y']})")
+            # Make sure coordinates are within screen bounds
+            x = min(max(0, element['x']), screen_width)
+            y = min(max(0, element['y']), screen_height)
+            
+            print(f"  PYAUTOGUI: CLICK_TEXT su \"{text_to_click}\" (trovato '{element['text']}') @ ({x},{y})")
             time.sleep(0.2) # Piccola pausa prima del click
-            pyautogui.click(element['x'], element['y'])
+            
+            # Move first, then click separately
+            pyautogui.moveTo(x, y, duration=0.2)
+            time.sleep(0.1)
+            pyautogui.click()
             return True, None
         else:
             msg = f"Elemento con testo simile a \"{text_to_click}\" non trovato."
@@ -346,10 +365,22 @@ def execute_action(action_string, current_elements):
     match = re.fullmatch(r"CLICK_XY\(\s*(\d+)\s*,\s*(\d+)\s*\)", action_string, re.IGNORECASE)
     if match:
         x, y = int(match.group(1)), int(match.group(2))
+        
+        # Make sure coordinates are within screen bounds
+        x = min(max(0, x), screen_width)
+        y = min(max(0, y), screen_height)
+        
         print(f"  PYAUTOGUI: CLICK_XY @ ({x},{y})")
         time.sleep(0.2) # Piccola pausa prima del click
-        pyautogui.click(x, y)
+        
+        # Move first, then click separately
+        pyautogui.moveTo(x, y, duration=0.2)
+        time.sleep(0.1)
+        pyautogui.click()
         return True, None
+    
+    # Rest of the function remains unchanged
+    # ...ap
 
     # TYPE("testo da scrivere")
     match = re.fullmatch(r"TYPE\(\s*\"(.*?)\"\s*\)", action_string, re.IGNORECASE)
