@@ -1,3 +1,4 @@
+import threading
 import google.generativeai as genai
 import pyautogui
 import pytesseract
@@ -11,7 +12,7 @@ import subprocess
 # --- CONFIGURAZIONE ---
 GOOGLE_API_KEY = "AIzaSyC8K8ymeN6RTDmGsXVnKUGfEDQBSlMBp0I"
 genai.configure(api_key=GOOGLE_API_KEY)
-MODEL_NAME = "gemini-2.0-flash-lite"
+MODEL_NAME = "gemini-2.0-flash"
 # MODEL_NAME = "gemini-1.0-pro-latest" # Alternativa
 
 # --------------------------------------------------------------------------- #
@@ -519,3 +520,222 @@ if __name__ == "__main__":
         print(f"\nRaggiunto il numero massimo di passi ({max_steps_per_goal}) per l'obiettivo.")
 
     print("\n--- Assistente GUI Terminato ---")
+
+
+
+# --- FUNZIONI PER INTEGRAZIONE UI ---
+
+def run_automation_task(goal_text, app=None, callback=None, max_steps=20):
+    """
+    Esegue un compito di automazione GUI utilizzando Gemini.
+    Può essere chiamato dall'interfaccia utente di StudyWiz.
+    
+    Args:
+        goal_text (str): L'obiettivo dell'automazione (es. "Apri blocco note e scrivi ciao")
+        app (GUI, optional): Istanza della classe GUI per interazione con l'interfaccia
+        callback (callable, optional): Funzione di callback per aggiornare l'UI durante l'esecuzione.
+                                      Chiamata con (step_num, total_steps, action, status, message)
+        max_steps (int): Numero massimo di passi per completare il compito
+        
+    Returns:
+        dict: Dizionario con i risultati dell'operazione e la cronologia delle azioni
+    """
+    pyautogui.FAILSAFE = True
+    pyautogui.PAUSE = 0.1
+    
+    action_history = []
+    overall_goal = goal_text
+    
+    # Invia notifica iniziale tramite callback
+    if callback:
+        callback(0, max_steps, "START", "running", f"Inizializzazione automazione: '{overall_goal}'")
+    elif app:
+        app.post_message(f"🚀 Inizializzazione: '{overall_goal}'", is_sent=False)
+    
+    for step_count in range(max_steps):
+        # Aggiorna progressione
+        if callback:
+            callback(step_count + 1, max_steps, "PROGRESS", "running", 
+                    f"Passo {step_count + 1}/{max_steps}")
+        
+        current_elements, screenshot = capture_screen_and_extract_elements()
+        screen_desc = describe_elements_for_llm(current_elements)
+        
+        # Ottieni azione da Gemini
+        action_str = get_next_action_from_gemini(overall_goal, "\n".join(action_history[-5:]), screen_desc)
+        
+        if not action_str:
+            if callback:
+                callback(step_count + 1, max_steps, "ERROR", "error", 
+                        "L'LLM non ha restituito un'azione valida")
+            elif app:
+                app.post_message("❌ L'AI non ha restituito un'azione valida", is_sent=False)
+            action_history.append("SYSTEM_ERROR: LLM no action returned.")
+            time.sleep(2)
+            continue
+        
+        # Notifica l'azione che stiamo per eseguire
+        if app:
+            app.post_message(f"🤖 Eseguo: {action_str}", is_sent=False)
+        
+        # Esegui l'azione
+        executed, message_to_user = execute_action(action_str, current_elements)
+        
+        if message_to_user == "DONE":
+            if callback:
+                callback(step_count + 1, max_steps, "DONE", "success", 
+                        f"Obiettivo '{overall_goal}' completato!")
+            elif app:
+                app.post_message(f"✅ Obiettivo '{overall_goal}' completato!", is_sent=False)
+            action_history.append("TASK_COMPLETED")
+            break
+        
+        if message_to_user and not executed:
+            if action_str.startswith("ASK_USER"):
+                # Quando integrato nell'UI, chiedi all'utente tramite callback
+                if callback:
+                    callback(step_count + 1, max_steps, "ASK_USER", "waiting", message_to_user)
+                elif app:
+                    app.post_message(f"❓ {message_to_user}", is_sent=False)
+                    # In modalità app, aspetta con timeout
+                    time.sleep(3)  # Attesa simulata
+                    action_history.append(f"USER_RESPONSE: Timeout in modalità UI")
+                else:
+                    # In modalità headless, va in timeout e salta
+                    action_history.append(f"USER_QUESTION: \"{message_to_user}\" (Skipped in headless mode)")
+            else:
+                # Errore nell'esecuzione dell'azione
+                if callback:
+                    callback(step_count + 1, max_steps, "ERROR", "error", 
+                           f"Errore: {message_to_user}")
+                elif app:
+                    app.post_message(f"❌ Errore: {message_to_user}", is_sent=False)
+                action_history.append(f"FAILED_ACTION: {action_str}. Reason: {message_to_user}")
+        
+        if executed:
+            if callback:
+                callback(step_count + 1, max_steps, action_str, "success", 
+                        f"Eseguito: {action_str}")
+            elif app and step_count % 3 == 0:  # Notifica solo ogni 3 passi per non ingombrare la chat
+                app.post_message(f"✅ Eseguito: {action_str}", is_sent=False)
+            action_history.append(f"EXECUTED_SUCCESS: {action_str}")
+        elif not message_to_user:
+            if callback:
+                callback(step_count + 1, max_steps, action_str, "error", 
+                        "Fallito per motivo sconosciuto")
+            elif app:
+                app.post_message(f"❌ Azione fallita: {action_str}", is_sent=False)
+            action_history.append(f"FAILED_ACTION_UNKNOWN_REASON: {action_str}")
+        
+        # Pausa per stabilizzazione della GUI
+        time.sleep(0.5)
+    
+    else:
+        if callback:
+            callback(max_steps, max_steps, "TIMEOUT", "warning", 
+                   f"Raggiunto il numero massimo di passi ({max_steps})")
+        elif app:
+            app.post_message(f"⚠️ Raggiunto il numero massimo di passi ({max_steps})", is_sent=False)
+    
+    result = {
+        "completed": message_to_user == "DONE",
+        "steps_executed": step_count + 1,
+        "action_history": action_history,
+        "goal": overall_goal
+    }
+    
+    return result
+
+def run_automation_async(goal_text, app=None, callback=None, max_steps=20):
+    """
+    Avvia l'automazione in un thread separato per non bloccare l'UI.
+    
+    Args:
+        goal_text: L'obiettivo dell'automazione
+        app: Istanza dell'app GUI
+        callback, max_steps: Come in run_automation_task
+    
+    Returns:
+        threading.Thread: Il thread che esegue l'automazione
+    """
+    def run_with_exception_handling():
+        try:
+            run_automation_task(goal_text, app, callback, max_steps)
+        except Exception as e:
+            import traceback
+            error_message = f"Errore durante l'automazione: {str(e)}"
+            print(error_message)
+            print(traceback.format_exc())
+            if app:
+                app.post_message(f"❌ {error_message}", is_sent=False)
+
+    automation_thread = threading.Thread(
+        target=run_with_exception_handling
+    )
+    automation_thread.daemon = True
+    automation_thread.start()
+    return automation_thread
+
+# Sostituisci il vecchio call_gemini_api con questa funzione
+def call_gemini_api(prompt, app=None):
+    """
+    Versione compatibile con la vecchia funzione call_gemini_api.
+    Ora supporta l'integrazione con l'app GUI StudyWiz.
+    
+    Args:
+        prompt: L'obiettivo dell'automazione come stringa
+        app: Istanza opzionale dell'app GUI di StudyWiz
+    
+    Returns:
+        threading.Thread: Thread di automazione in esecuzione
+    """
+    print("="*30)
+    print(" Assistente GUI Gemini - v0.3 (Integrato) ")
+    print("="*30)
+    print("Per interrompere PyAutoGUI: muovi rapidamente il mouse nell'angolo in alto a sinistra.")
+    print("Premi Ctrl+C nel terminale per uscire dall'assistente.")
+
+    # Lancia l'automazione con l'istanza dell'app (se fornita)
+    return run_automation_async(prompt, app=app, max_steps=100)
+
+def process_audio_command(audio_file, app=None):
+    """
+    Processa un comando vocale da un file audio.
+    
+    Args:
+        audio_file (str): Percorso al file audio
+        app (GUI, optional): Istanza dell'app GUI per interazione
+    
+    Returns:
+        str: Testo riconosciuto o None in caso di errore
+    """
+    try:
+        import speech_recognition as sr
+        from pydub import AudioSegment
+        
+        # Converti audio in formato compatibile
+        sound = AudioSegment.from_wav(audio_file)
+        converted_file = audio_file.replace(".wav", "_converted.wav")
+        sound.export(converted_file, format="wav")
+        
+        # Esegui il riconoscimento
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(converted_file) as source:
+            audio_data = recognizer.record(source)
+            text = recognizer.recognize_google(audio_data, language="it-IT")
+            
+        # Pulizia
+        os.remove(converted_file)
+        
+        # Esegui l'automazione con il testo riconosciuto
+        if app:
+            app.post_message(f"🎤 Audio riconosciuto: '{text}'", is_sent=False)
+            call_gemini_api(text, app=app)
+            
+        return text
+        
+    except Exception as e:
+        print(f"Errore nel riconoscimento audio: {e}")
+        if app:
+            app.post_message(f"❌ Errore nel riconoscimento audio: {str(e)}", is_sent=False)
+        return None
